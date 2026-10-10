@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BrandShield | Digital Risk Protection & Fake Brand Defense Platform</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/css/main.css">
+  <link rel="stylesheet" href="/static/css/components.css">
+  <!-- Chart.js CDN for live visualization -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+<div class="app-container">
+  
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="brand-logo">
+      <div class="logo-icon">🛡️</div>
+      <div>
+        <div class="logo-text">BrandShield</div>
+        <div class="logo-tag">Risk Protection Platform</div>
+      </div>
+    </div>
+
+    <ul class="nav-links">
+      <li>
+        <a class="nav-item active" data-target="dashboard-view" id="nav-dashboard">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+          Threat Dashboard
+        </a>
+      </li>
+      <li>
+        <a class="nav-item" data-target="brands-view" id="nav-brands">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+          Brand Registration
+        </a>
+      </li>
+      <li>
+        <a class="nav-item" data-target="lookalikes-view" id="nav-lookalikes">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"></path></svg>
+          Look-Alike Hunter
+        </a>
+      </li>
+      <li>
+        <a class="nav-item" data-target="scanner-view" id="nav-scanner">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+          Phishing Link Scanner
+        </a>
+      </li>
+      <li>
+        <a class="nav-item" data-target="impersonations-view" id="nav-impersonations">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+          Social Impersonators
+        </a>
+      </li>
+      <li>
+        <a class="nav-item" data-target="incidents-view" id="nav-incidents">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+          Incidents & Takedowns
+        </a>
+      </li>
+      <li>
+        <a class="nav-item" data-target="pricing-view" id="nav-pricing">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+          Pricing & Business Model
+        </a>
+      </li>
+      <li>
+        <a class="nav-item" href="/slides" target="_blank" id="nav-slides" style="color:var(--accent-cyan); font-weight:600; border-left:3px solid var(--accent-cyan); background:rgba(6, 182, 212, 0.08);">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 4v16M17 4v16M3 8h4m10 0h4M3 12h18M3 16h4m10 0h4M4 20h16a1 1 0 001-1V5a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1z"></path></svg>
+          📽️ Pitch Deck Slides ↗
+        </a>
+      </li>
+    </ul>
+
+    <div class="sidebar-footer">
+      <div>HACXLERATE 2026 #03</div>
+      <div style="color: var(--accent-cyan); font-weight:600;">Kampus.vc Edition</div>
+    </div>
+  </aside>
+
+  <!-- Main Wrapper -->
+  <div class="main-wrapper">
+    
+    <!-- Top Header -->
+    <header class="top-header">
+      <div class="header-title-box">
+        <h1 id="page-heading">Threat Intelligence Dashboard</h1>
+        <p id="page-subheading">Continuous external threat monitoring and proactive digital risk defense</p>
+      </div>
+
+      <div class="header-actions">
+        <!-- Pitch Deck Slides Button -->
+        <a href="/slides" target="_blank" class="btn btn-primary" style="text-decoration:none; display:inline-flex; align-items:center; gap:0.4rem; background:linear-gradient(135deg, #06b6d4, #3b82f6); box-shadow:0 0 15px rgba(6, 182, 212, 0.35);">
+          📽️ Pitch Deck Slides
+        </a>
+
+        <!-- Guided Pitch Tour Button -->
+        <button class="btn btn-secondary" onclick="startGuidedDemo()" style="border-color:var(--accent-cyan); color:var(--accent-cyan);">
+          ▶️ Guided Pitch Demo
+        </button>
+
+        <select id="global-brand-filter" class="brand-selector">
+          <option value="ALL">All Monitored Brands</option>
+        </select>
+
+        <div style="display:inline-flex; align-items:center; gap:8px;">
+          <span style="color:var(--text-muted);font-size:13px;">Signed in as <strong style="color:#eaf2ff;">{{ user_name }}</strong></span>
+          <span title="Account Identity Verified via Email OTP" style="display:inline-flex; align-items:center; gap:4px; padding:3px 9px; border-radius:999px; background:rgba(16, 185, 129, 0.15); border:1px solid rgba(16, 185, 129, 0.4); color:#34d399; font-size:11px; font-weight:700;">
+            <svg width="12" height="12" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg> Verified
+          </span>
+        </div>
+        <form action="/logout" method="post" style="display:inline;margin:0;">
+          <button class="btn btn-secondary" type="submit">Log out</button>
+        </form>
+      </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="content-area">
+      {% if just_verified %}
+      <div style="margin: 0 0 20px 0; padding: 14px 20px; border-radius: 12px; background: rgba(16, 185, 129, 0.15); border: 1px solid #10b981; color: #a7f3d0; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 4px 20px rgba(16, 185, 129, 0.2);">
+        <div style="display:flex; align-items:center; gap:12px;">
+          <span style="font-size:22px;">✅</span>
+          <div>
+            <div style="font-weight:700; color:#34d399; font-size:14px;">Identity & Email Verified Successfully!</div>
+            <div style="font-size:12px; color:#cbd5e1;">Welcome, {{ user_name }}. Your corporate security tenant is now active and protected by BrandShield.</div>
+          </div>
+        </div>
+        <span style="font-size:11px; font-weight:700; background:rgba(16, 185, 129, 0.25); color:#6ee7b7; padding:4px 10px; border-radius:20px; text-transform:uppercase;">Verified Status Active</span>
+      </div>
+      {% endif %}
+
+      <!-- ================================================================= -->
+      <!-- VIEW 1: THREAT DASHBOARD -->
+      <!-- ================================================================= -->
+      <section id="dashboard-view" class="view-section active">
+        <!-- ============================================================= -->
+        <!-- TEMPLATE 1: COMMAND CENTER DASHBOARD HERO (1ST IMAGE TEMPLATE)-->
+        <!-- ============================================================= -->
+        <div class="dashboard-hero-banner">
+          <div style="position:relative; z-index:2; max-width:680px;">
+            <div class="hero-pill-badge hero-pill-cyan">
+              <span>●</span> TEMPLATE 1: EXTERIOR PERIMETER DEFENSE COMMAND CENTER
+            </div>
+            <h2 style="font-size:1.6rem; font-weight:800; color:#fff; line-height:1.2; letter-spacing:-0.01em;">
+              BrandShield Autonomous Perimeter Defense
+            </h2>
+            <p style="font-size:0.88rem; color:#cbd5e1; margin-top:0.5rem; line-height:1.5;">
+              Active external perimeter surveillance defending registered trademarks from typosquatting, zero-day phishing websites, and deceptive social media impersonators.
+            </p>
+            <div style="display:flex; flex-wrap:wrap; gap:0.6rem; margin-top:1rem;">
+              <span class="hero-telemetry-tag"><span style="color:#10b981;">●</span> 24/7 Defense Grid Active</span>
+              <span class="hero-telemetry-tag"><span style="color:var(--accent-cyan);">●</span> RapidFuzz Engine V2.6</span>
+              <span class="hero-telemetry-tag"><span style="color:#fbbf24;">●</span> 1-Click Legal Takedown Desk</span>
+            </div>
+          </div>
+
+          <div class="hero-actions-group" style="position:relative; z-index:2;">
+            <a href="/slides" target="_blank" class="btn btn-primary" style="text-decoration:none; padding:10px 18px; font-weight:700; background:linear-gradient(135deg, #06b6d4, #3b82f6); box-shadow:0 0 20px rgba(6, 182, 212, 0.4);">
+              📽️ Pitch Deck Slides
+            </a>
+            <button class="btn btn-secondary" onclick="startGuidedDemo()" style="padding:10px 16px;">
+              ▶️ Guided Tour
+            </button>
+          </div>
+        </div>
+
+        <!-- Stat Grid -->
+        <div class="stat-grid">
+          <div class="stat-card">
+            <div class="stat-icon-wrapper stat-icon-blue">🏢</div>
+            <div class="stat-content">
+              <span class="stat-label">Monitored Brands</span>
+              <span class="stat-value" id="stat-brands">0</span>
+              <span class="stat-sub">Active protected entities</span>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon-wrapper stat-icon-red">⚠️</div>
+            <div class="stat-content">
+              <span class="stat-label">Active Incidents</span>
+              <span class="stat-value" id="stat-incidents" style="color:var(--status-critical);">0</span>
+              <span class="stat-sub">Requires triage / takedown</span>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon-wrapper stat-icon-amber">🌐</div>
+            <div class="stat-content">
+              <span class="stat-label">Threats Identified</span>
+              <span class="stat-value" id="stat-threats">0</span>
+              <span class="stat-sub">Lookalikes & fake accounts</span>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon-wrapper stat-icon-green">🛡️</div>
+            <div class="stat-content">
+              <span class="stat-label">Resolved Threats</span>
+              <span class="stat-value" id="stat-resolved" style="color:var(--status-safe);">0</span>
+              <span class="stat-sub">Successfully neutralized</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Charts Grid -->
+        <div class="charts-grid">
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">Threat Severity Distribution</div>
+            </div>
+            <div class="chart-container">
+              <canvas id="severityChart"></canvas>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">Threat Categories Breakdown</div>
+            </div>
+            <div class="chart-container">
+              <canvas id="categoryChart"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Incidents Table -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">🚨 Recent High-Priority Threat Feed</div>
+            <button class="btn btn-secondary btn-sm" onclick="showTab('incidents-view')">View All Incidents</button>
+          </div>
+          <div class="table-responsive">
+            <table class="custom-table">
+              <thead>
+                <tr>
+                  <th>Brand</th>
+                  <th>Threat Title & URL</th>
+                  <th>Category</th>
+                  <th>Severity</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="dashboard-recent-incidents-body">
+                <tr><td colspan="6" style="text-align:center;">Loading threat intelligence...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ================================================================= -->
+      <!-- VIEW 2: BRAND REGISTRATION (CORE PROBLEM STATEMENT FEATURE) -->
+      <!-- ================================================================= -->
+      <section id="brands-view" class="view-section">
+        <!-- ============================================================= -->
+        <!-- TEMPLATE 2: BRAND ASSET MATRIX HERO (2ND IMAGE TEMPLATE)      -->
+        <!-- ============================================================= -->
+        <div class="slides-hero-banner">
+          <div style="position:relative; z-index:2; max-width:680px;">
+            <div class="hero-pill-badge hero-pill-pink">
+              <span>●</span> TEMPLATE 2: SLIDE VIEW 02 • GROUND TRUTH MATRIX
+            </div>
+            <h2 style="font-size:1.45rem; font-weight:800; color:#fff; line-height:1.2;">
+              Brand Ground Truth &amp; Trademark Perimeter
+            </h2>
+            <p style="font-size:0.85rem; color:#cbd5e1; margin-top:0.4rem; line-height:1.5;">
+              Establish your organization's official golden baseline. Once registered, BrandShield immediately launches automated threat hunting, homoglyph synthesis, and dark web leak monitoring.
+            </p>
+          </div>
+          <div class="hero-actions-group" style="position:relative; z-index:2;">
+            <a href="/slides?slide=3" target="_blank" class="btn btn-secondary" style="text-decoration:none; border-color:var(--slide-magenta); color:#f472b6;">
+              📽️ View Slide in Deck ➔
+            </a>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">🏢 Register Brand for Defense Monitoring</div>
+              <p style="font-size:0.8rem; color:var(--text-muted); margin-top:4px;">
+                Add your company's official name, web domains, and social media footprints. BrandShield will immediately initiate automated threat hunting across the open web.
+              </p>
+            </div>
+          </div>
+
+          <form id="brand-registration-form" onsubmit="handleBrandSubmit(event)">
+            <div class="form-grid">
+              <div class="form-group">
+                <label class="form-label">Company / Brand Name *</label>
+                <input type="text" id="reg-company-name" class="form-input" placeholder="e.g. ABC Bank or Kampus VC" required>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Official Domain *</label>
+                <input type="text" id="reg-official-domain" class="form-input mono-text" placeholder="e.g. abcbank.com or kampus.vc" required>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Official Security Email</label>
+                <input type="email" id="reg-official-email" class="form-input" placeholder="e.g. security@abcbank.com">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Industry Vertical</label>
+                <select id="reg-industry" class="form-select">
+                  <option value="Banking & Financial Services">Banking & Financial Services</option>
+                  <option value="E-Commerce & Retail">E-Commerce & Retail</option>
+                  <option value="Venture Capital & Tech">Venture Capital & Tech</option>
+                  <option value="Healthcare & Pharma">Healthcare & Pharma</option>
+                  <option value="Crypto & Web3">Crypto & Web3</option>
+                  <option value="General Enterprise">General Enterprise</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Instagram Handle</label>
+                <input type="text" id="reg-instagram" class="form-input" placeholder="e.g. @abcbank_official">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Twitter / X Handle</label>
+                <input type="text" id="reg-twitter" class="form-input" placeholder="e.g. @abcbank_care">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Facebook Page / Handle</label>
+                <input type="text" id="reg-facebook" class="form-input" placeholder="e.g. abcbank">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">LinkedIn Organization</label>
+                <input type="text" id="reg-linkedin" class="form-input" placeholder="e.g. abc-bank">
+              </div>
+
+              <div class="form-group full-width">
+                <label class="form-label">Protected Trademarks & High-Risk Keywords (comma-separated)</label>
+                <input type="text" id="reg-keywords" class="form-input" placeholder="e.g. netbanking, secure login, kyc verification, reward claims, loan approval">
+              </div>
+            </div>
+
+            <div style="margin-top: 1.5rem; display:flex; justify-content:flex-end;">
+              <button type="submit" class="btn btn-primary" id="btn-save-brand">
+                🛡️ Save Brand & Launch Threat Discovery
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Registered Brands List -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Monitored Brand Assets</div>
+          </div>
+          <div class="brand-grid" id="brands-container">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ================================================================= -->
+      <!-- VIEW 3: LOOK-ALIKE HUNTER (TYPOSQUATTING & HOMOGLYPH ENGINE) -->
+      <!-- ================================================================= -->
+      <section id="lookalikes-view" class="view-section">
+        <!-- ============================================================= -->
+        <!-- TEMPLATE 2: LOOK-ALIKE HUNTER HERO (2ND IMAGE TEMPLATE)       -->
+        <!-- ============================================================= -->
+        <div class="slides-hero-banner">
+          <div style="position:relative; z-index:2; max-width:680px;">
+            <div class="hero-pill-badge hero-pill-pink">
+              <span>●</span> TEMPLATE 2: SLIDE VIEW 03 • TYPOSQUAT &amp; HOMOGLYPH ENGINE
+            </div>
+            <h2 style="font-size:1.45rem; font-weight:800; color:#fff; line-height:1.2;">
+              Autonomous Look-Alike &amp; Combosquat Hunter
+            </h2>
+            <p style="font-size:0.85rem; color:#cbd5e1; margin-top:0.4rem; line-height:1.5;">
+              Synthesizing character omissions, bit-squats, homoglyphs, and deceptive TLD permutations using RapidFuzz string proximity and live DNS resolution probes.
+            </p>
+          </div>
+          <div class="hero-actions-group" style="position:relative; z-index:2;">
+            <a href="/slides?slide=4" target="_blank" class="btn btn-secondary" style="text-decoration:none; border-color:var(--slide-magenta); color:#f472b6;">
+              📽️ View Slide in Deck ➔
+            </a>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">🌐 Look-Alike Domain Hunter</div>
+              <p style="font-size:0.8rem; color:var(--text-muted);">
+                Autonomous generation and tracking of homoglyphs, typosquats, and combosquatted domains targeting your brand.
+              </p>
+            </div>
+            
+            <div style="display:flex; gap:0.5rem;">
+              <input type="text" id="custom-lookalike-input" class="form-input mono-text" style="width:240px;" placeholder="Generate for domain...">
+              <button class="btn btn-secondary" onclick="generateCustomLookalikes()">Generate</button>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="custom-table">
+              <thead>
+                <tr>
+                  <th>Variant Domain</th>
+                  <th>Attack Technique</th>
+                  <th>Similarity Match</th>
+                  <th>DNS Status</th>
+                  <th>IP Address</th>
+                  <th>Threat Level</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="lookalikes-table-body">
+                <tr><td colspan="7" style="text-align:center;">Loading detected look-alikes...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ================================================================= -->
+      <!-- VIEW 4: INSTANT PHISHING LINK SCANNER -->
+      <!-- ================================================================= -->
+      <section id="scanner-view" class="view-section">
+        <!-- ============================================================= -->
+        <!-- TEMPLATE 2: URL SCORER HERO (2ND IMAGE TEMPLATE)               -->
+        <!-- ============================================================= -->
+        <div class="slides-hero-banner">
+          <div style="position:relative; z-index:2; max-width:680px;">
+            <div class="hero-pill-badge hero-pill-pink">
+              <span>●</span> TEMPLATE 2: SLIDE VIEW 04 • EXPLAINABLE URL RISK SCORER
+            </div>
+            <h2 style="font-size:1.45rem; font-weight:800; color:#fff; line-height:1.2;">
+              Transparent Heuristic &amp; Phishing Link Scorer
+            </h2>
+            <p style="font-size:0.85rem; color:#cbd5e1; margin-top:0.4rem; line-height:1.5;">
+              Itemized diagnostic evidence cards breaking down protocol schemes, SSL presence, high-abuse TLDs, and keyword masquerading with zero black-box obscurity.
+            </p>
+          </div>
+          <div class="hero-actions-group" style="position:relative; z-index:2;">
+            <a href="/slides?slide=4" target="_blank" class="btn btn-secondary" style="text-decoration:none; border-color:var(--slide-magenta); color:#f472b6;">
+              📽️ View Slide in Deck ➔
+            </a>
+          </div>
+        </div>
+
+        <div class="scanner-hero">
+          <h2>🔍 Instant URL Threat & Phishing Scanner</h2>
+          <p>Paste any suspicious link or domain. BrandShield analyzes entropy, encryption, brand impersonation signals, and deceptive patterns in real time.</p>
+          
+          <form onsubmit="handleScanSubmit(event)">
+            <div class="scan-input-group">
+              <input type="text" id="scan-url-input" placeholder="https://abcbank-secure-netbanking.top/login.php" required>
+              <button type="submit" class="btn btn-primary" id="btn-scan-action">Analyze Risk</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Scan Result Container -->
+        <div id="scan-result-card" class="card scan-result-card">
+          <div class="card-header">
+            <div class="card-title">Diagnostic Security Verdict</div>
+            <div id="scan-verdict-badge"></div>
+          </div>
+
+          <div id="score-banner" class="score-banner">
+            <div>
+              <h3 id="scan-verdict-title" style="font-size:1.25rem; font-weight:700;">MALICIOUS PHISHING DETECTED</h3>
+              <p id="scan-target-display" class="mono-text" style="font-size:0.85rem; color:var(--text-muted); margin-top:4px;"></p>
+              <div id="scan-brand-match-alert" style="margin-top:8px; font-weight:600; color:#f87171;"></div>
+            </div>
+
+            <div id="score-circle" class="score-circle">
+              <span id="score-number" class="score-number">95</span>
+              <span class="score-scale">/ 100 RISK</span>
+            </div>
+          </div>
+
+          <h4 style="font-size:0.9rem; margin-top:1.5rem; color:var(--text-muted);">REASONING & EVIDENCE BREAKDOWN</h4>
+          <div id="diagnostics-container" class="diagnostics-list"></div>
+
+          <div style="margin-top:1.5rem; padding:1rem; background:rgba(255,255,255,0.03); border-radius:var(--radius-sm);">
+            <h4 style="font-size:0.85rem; color:var(--accent-cyan);">RECOMMENDED RESPONSE ACTION:</h4>
+            <ul id="recommendations-list" style="margin-top:0.5rem; margin-left:1.25rem; font-size:0.85rem; color:var(--text-main);"></ul>
+          </div>
+        </div>
+
+        <!-- Recent Public Scans -->
+        <div class="card" style="margin-top:2rem;">
+          <div class="card-header">
+            <div class="card-title">Recent Audit Scans</div>
+          </div>
+          <div class="table-responsive">
+            <table class="custom-table">
+              <thead>
+                <tr>
+                  <th>Target URL</th>
+                  <th>Risk Score</th>
+                  <th>Verdict</th>
+                  <th>Targeted Brand</th>
+                  <th>Timestamp</th>
+                </tr>
+              </thead>
+              <tbody id="recent-scans-table-body">
+                <tr><td colspan="5" style="text-align:center;">No recent scans.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ================================================================= -->
+      <!-- VIEW 5: SOCIAL IMPERSONATOR WATCH -->
+      <!-- ================================================================= -->
+      <section id="impersonations-view" class="view-section">
+        <!-- ============================================================= -->
+        <!-- TEMPLATE 2: SOCIAL IMPERSONATION HERO (2ND IMAGE TEMPLATE)    -->
+        <!-- ============================================================= -->
+        <div class="slides-hero-banner">
+          <div style="position:relative; z-index:2; max-width:680px;">
+            <div class="hero-pill-badge hero-pill-pink">
+              <span>●</span> TEMPLATE 2: SLIDE VIEW 05 • SOCIAL IMPERSONATION WATCH
+            </div>
+            <h2 style="font-size:1.45rem; font-weight:800; color:#fff; line-height:1.2;">
+              Social Profile &amp; Fraudulent Support Radar
+            </h2>
+            <p style="font-size:0.85rem; color:#cbd5e1; margin-top:0.4rem; line-height:1.5;">
+              Continuous tracking of unverified support handles, fraudulent account recovery desks, and fake giveaway pages mimicking your brand on Instagram, X/Twitter, and Facebook.
+            </p>
+          </div>
+          <div class="hero-actions-group" style="position:relative; z-index:2;">
+            <a href="/slides?slide=2" target="_blank" class="btn btn-secondary" style="text-decoration:none; border-color:var(--slide-magenta); color:#f472b6;">
+              📽️ View Slide in Deck ➔
+            </a>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">👥 Social Media Impersonation Watch</div>
+              <p style="font-size:0.8rem; color:var(--text-muted);">
+                Detected fake social handles, unverified support accounts, and scam giveaways imitating your brand.
+              </p>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="custom-table">
+              <thead>
+                <tr>
+                  <th>Platform</th>
+                  <th>Suspicious Handle</th>
+                  <th>Deceptive Profile Bio</th>
+                  <th>Text Similarity</th>
+                  <th>Estimated Reach</th>
+                  <th>Threat Level</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="impersonations-table-body">
+                <tr><td colspan="7" style="text-align:center;">Loading social accounts...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ================================================================= -->
+      <!-- VIEW 6: INCIDENTS & 1-CLICK TAKEDOWN WORKFLOW -->
+      <!-- ================================================================= -->
+      <section id="incidents-view" class="view-section">
+        <!-- ============================================================= -->
+        <!-- TEMPLATE 2: INCIDENTS & TAKEDOWNS HERO (2ND IMAGE TEMPLATE)   -->
+        <!-- ============================================================= -->
+        <div class="slides-hero-banner">
+          <div style="position:relative; z-index:2; max-width:680px;">
+            <div class="hero-pill-badge hero-pill-pink">
+              <span>●</span> TEMPLATE 2: SLIDE VIEW 06 • INCIDENT TAKEDOWN DESK
+            </div>
+            <h2 style="font-size:1.45rem; font-weight:800; color:#fff; line-height:1.2;">
+              Autonomous Incident Triage &amp; 1-Click Takedown Desk
+            </h2>
+            <p style="font-size:0.85rem; color:#cbd5e1; margin-top:0.4rem; line-height:1.5;">
+              Triage external perimeter threats through complete lifecycle state transitions and auto-generate legally compliant DMCA / Cease &amp; Desist letters dispatched to Cloudflare, Namecheap, and GoDaddy abuse desks.
+            </p>
+          </div>
+          <div class="hero-actions-group" style="position:relative; z-index:2;">
+            <a href="/slides?slide=5" target="_blank" class="btn btn-secondary" style="text-decoration:none; border-color:var(--slide-magenta); color:#f472b6;">
+              📽️ View Slide in Deck ➔
+            </a>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">⚖️ Incident Management & Takedown Workflow</div>
+              <p style="font-size:0.8rem; color:var(--text-muted);">
+                Triage threats through <strong>OPEN ➔ INVESTIGATING ➔ RESOLVED</strong> lifecycle and generate legally compliant takedown requests.
+              </p>
+            </div>
+
+            <!-- Status Filter -->
+            <div style="display:flex; gap:0.5rem;">
+              <button class="btn btn-secondary btn-sm" onclick="filterIncidents('ALL')">All</button>
+              <button class="btn btn-secondary btn-sm" onclick="filterIncidents('OPEN')">Open</button>
+              <button class="btn btn-secondary btn-sm" onclick="filterIncidents('INVESTIGATING')">Investigating</button>
+              <button class="btn btn-secondary btn-sm" onclick="filterIncidents('RESOLVED')">Resolved</button>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="custom-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Brand Target</th>
+                  <th>Threat Incident Title & Evidence</th>
+                  <th>Severity</th>
+                  <th>Status Lifecycle</th>
+                  <th>Takedown Notice</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="incidents-table-body">
+                <tr><td colspan="7" style="text-align:center;">Loading incidents...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ================================================================= -->
+      <!-- VIEW 7: PRICING & SUBSCRIPTION MODEL (CHALLENGE SECTION 9 & 10) -->
+      <!-- ================================================================= -->
+      <section id="pricing-view" class="view-section">
+        <!-- ============================================================= -->
+        <!-- TEMPLATE 2: PRICING & ROI HERO (2ND IMAGE TEMPLATE)            -->
+        <!-- ============================================================= -->
+        <div class="slides-hero-banner">
+          <div style="position:relative; z-index:2; max-width:680px;">
+            <div class="hero-pill-badge hero-pill-pink">
+              <span>●</span> TEMPLATE 2: SLIDE VIEW 07 • COMMERCIAL SUBSCRIPTION &amp; ROI
+            </div>
+            <h2 style="font-size:1.45rem; font-weight:800; color:#fff; line-height:1.2;">
+              Predictable Security Subscriptions &amp; Customer ROI
+            </h2>
+            <p style="font-size:0.85rem; color:#cbd5e1; margin-top:0.4rem; line-height:1.5;">
+              Democratic pricing tailored for startups and growing enterprises starting at $29/month. Replaces $85,000/year dedicated SOC analyst headcount with 98% direct cost savings.
+            </p>
+          </div>
+          <div class="hero-actions-group" style="position:relative; z-index:2;">
+            <a href="/slides?slide=6" target="_blank" class="btn btn-secondary" style="text-decoration:none; border-color:var(--slide-magenta); color:#f472b6;">
+              📽️ View Slide in Deck ➔
+            </a>
+          </div>
+        </div>
+
+        <div style="text-align:center; margin-bottom:2rem;">
+          <h2 style="font-size:1.6rem; color:#fff; font-weight:700;">Simple, Transparent Protection Tiers</h2>
+          <p style="color:var(--text-muted); font-size:0.9rem; max-width:650px; margin:0.5rem auto 0 auto;">
+            Enterprise-grade brand defense priced for startups and small-to-mid businesses. Scale seamlessly by number of monitored brand assets.
+          </p>
+        </div>
+
+        <div class="pricing-grid">
+          <!-- Starter Tier -->
+          <div class="pricing-card">
+            <div class="pricing-header">
+              <h3>Starter Shield</h3>
+              <p style="font-size:0.8rem; color:var(--text-muted);">For early-stage startups & single brands</p>
+            </div>
+            <div class="pricing-price">$29 <span>/ month</span></div>
+            <ul class="pricing-features">
+              <li><svg fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg> 1 Monitored Brand Domain</li>
+              <li><svg fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg> Daily Look-Alike & Typosquat Scan</li>
+              <li><svg fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg> Unlimited Public URL Risk Scans</li>
+              <li><svg fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg> Basic DMCA Notice Template</li>
+            </ul>
+            <button class="btn btn-secondary" style="width:100%;">Select Starter</button>
+          </div>
+
+          <!-- Pro Growth Tier -->
+          <div class="pricing-card featured">
+            <span class="popular-badge">Most Popular</span>
+            <div class="pricing-header">
+              <h3>Growth Defense</h3>
+              <p style="font-size:0.8rem; color:var(--text-muted);">For growing brands & fintechs</p>
+            </div>
+            <div class="pricing-price">$99 <span>/ month</span></div>
+            <ul class="pricing-features">
+              <li><svg fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg> Up to 5 Monitored Brand Assets</li>
+              <li><svg fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg> Real-Time DNS & Active Host Alerts</li>
+              <li><svg fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg> Social Media Impersonator Watch</li>
+              <li><svg fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg> 5 Guided 1-Click Takedowns/mo</li>
+              <li><svg fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg> Leaked Credential Monitoring</li>
+            </ul>
+            <button class="btn btn-primary" style="width:100%;">Get Started with Pro</button>
+          </div>
+
+          <!-- Enterprise Tier -->
+          <div class="pricing-card">
+            <div class="pricing-header">
+              <h3>Enterprise Sentinel</h3>
+              <p style="font-size:0.8rem; color:var(--text-muted);">For banks, multi-brand holdings & orgs</p>
+            </div>
+            <div class="pricing-price">$299 <span>/ month</span></div>
+            <ul class="pricing-features">
+              <li><svg fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg> Unlimited Monitored Brands & Domains</li>
+              <li><svg fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg> Priority Registrar Takedown SLA (&lt; 6 hrs)</li>
+              <li><svg fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg> Automated Dark Web Credential Stream</li>
+              <li><svg fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg> Dedicated Brand Protection Attorney</li>
+              <li><svg fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg> Full REST API Webhook Integrations</li>
+            </ul>
+            <button class="btn btn-secondary" style="width:100%;">Contact Enterprise</button>
+          </div>
+        </div>
+
+        <!-- Dynamic Subscription ROI Calculator -->
+        <div class="card calculator-box">
+          <div class="card-header">
+            <div class="card-title">🧮 Custom Asset & Takedown SLA Calculator</div>
+          </div>
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:2rem; align-items:center;">
+            <div>
+              <div class="slider-container">
+                <div style="display:flex; justify-content:space-between; font-size:0.85rem;">
+                  <span>Monitored Brand Assets:</span>
+                  <strong id="calc-brands-val" style="color:var(--accent-cyan);">2 Brands</strong>
+                </div>
+                <input type="range" id="calc-brands" class="slider-input" min="1" max="20" value="2" oninput="updatePricingCalculator()">
+              </div>
+
+              <div class="slider-container">
+                <div style="display:flex; justify-content:space-between; font-size:0.85rem;">
+                  <span>Included Registrar Takedowns:</span>
+                  <strong id="calc-takedowns-val" style="color:var(--status-critical);">4 / month</strong>
+                </div>
+                <input type="range" id="calc-takedowns" class="slider-input" min="0" max="30" value="4" oninput="updatePricingCalculator()">
+              </div>
+            </div>
+
+            <div style="background:rgba(255,255,255,0.03); border:1px solid var(--border-color); border-radius:var(--radius-md); padding:1.5rem; text-align:center;">
+              <div style="font-size:0.8rem; color:var(--text-muted); text-transform:uppercase;">Estimated Monthly Defense Investment</div>
+              <div id="calc-total-price" style="font-size:2.5rem; font-weight:800; color:var(--accent-cyan); margin:0.25rem 0;">$118</div>
+              <div style="font-size:0.75rem; color:var(--status-safe);">⚡ Saves an estimated $14,000/yr in dedicated SOC team overhead</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<!-- ================================================================= -->
+<!-- FLOATING GUIDED DEMO PROGRESS BAR (FOR JUDGES & PITCH DEMO) -->
+<!-- ================================================================= -->
+<div id="demo-guide-bar" class="demo-guide-bar">
+  <div>
+    <div id="demo-badge" class="demo-step-badge">Step 1 of 5</div>
+    <div id="demo-title" class="demo-step-title">1. The Threat: Real-World Brand Impersonation Scam</div>
+    <div id="demo-desc" class="demo-step-desc">Attackers register fake look-alike websites copying brand logins to harvest customer banking passwords.</div>
+  </div>
+
+  <div style="display:flex; align-items:center; gap:0.75rem; flex-shrink:0;">
+    <a href="/slides" target="_blank" class="btn btn-secondary btn-sm" style="border-color:var(--accent-cyan); color:var(--accent-cyan); text-decoration:none;">📽️ Open Slides Deck</a>
+    <button class="btn btn-secondary btn-sm" onclick="prevDemoStep()">◀ Previous</button>
+    <button class="btn btn-primary btn-sm" id="demo-next-btn" onclick="nextDemoStep()">Next Step ➔</button>
+    <button class="close-btn" onclick="stopGuidedDemo()" style="margin-left:0.5rem;" title="Close Tour">&times;</button>
+  </div>
+</div>
+
+<!-- ================================================================= -->
+<!-- MODAL: 1-CLICK TAKEDOWN LETTER GENERATOR -->
+<!-- ================================================================= -->
+<div id="takedown-modal" class="modal-overlay">
+  <div class="modal-dialog">
+    <div class="modal-header">
+      <h3 style="font-size:1.1rem; font-weight:700; color:#fff;">🛡️ Formal Abuse & DMCA Takedown Notice</h3>
+      <button class="close-btn" onclick="closeModal('takedown-modal')">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div style="margin-bottom:1rem;">
+        <label class="form-label">Designated Registrar / Abuse Contact:</label>
+        <div id="takedown-recipient-email" class="mono-text" style="color:var(--accent-cyan); font-weight:600;"></div>
+      </div>
+
+      <div style="margin-bottom:1rem;">
+        <label class="form-label">Subject Line:</label>
+        <div id="takedown-subject" class="mono-text" style="color:var(--text-main); font-size:0.85rem;"></div>
+      </div>
+
+      <label class="form-label">Generated Cease & Desist / Suspension Notice:</label>
+      <pre id="takedown-body-text" class="legal-notice-box"></pre>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="copyTakedownText()">📋 Copy Notice</button>
+      <button class="btn btn-primary" onclick="simulateTakedownDispatch()">⚡ Dispatch to Abuse Desk</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================================================================= -->
+<!-- MODAL: EXECUTIVE SECURITY AUDIT REPORT -->
+<!-- ================================================================= -->
+<div id="report-modal" class="modal-overlay">
+  <div class="modal-dialog" style="max-width:850px;">
+    <div class="modal-header">
+      <h3 style="font-size:1.1rem; font-weight:700; color:#fff;">📑 Executive Brand Protection Audit Report</h3>
+      <button class="close-btn" onclick="closeModal('report-modal')">&times;</button>
+    </div>
+    <div class="modal-body" id="report-modal-content">
+      <!-- Dynamically generated printable report -->
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="window.print()">🖨️ Print / Save as PDF</button>
+      <button class="btn btn-primary" onclick="closeModal('report-modal')">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast Container -->
+<div id="toast-container" class="toast-container"></div>
+
+<!-- JavaScript Application Modules -->
+<script src="/static/js/app.js"></script>
+<script src="/static/js/dashboard.js"></script>
+<script src="/static/js/brand_manager.js"></script>
+<script src="/static/js/lookalikes.js"></script>
+<script src="/static/js/scanner.js"></script>
+<script src="/static/js/impersonation.js"></script>
+<script src="/static/js/incidents.js"></script>
+<script src="/static/js/pricing.js"></script>
+<script src="/static/js/guided_demo.js"></script>
+
+</body>
+</html>

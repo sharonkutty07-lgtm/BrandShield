@@ -1,0 +1,1646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BrandShield | Pitch Deck & Presentation Slides (HACXLERATE 2026)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/css/main.css">
+  <link rel="stylesheet" href="/static/css/components.css">
+  <style>
+    :root {
+      --slide-bg: #070d18;
+      --slide-cyan: #00f0ff;
+      --slide-blue: #3b82f6;
+      --slide-magenta: #ec4899;
+      --slide-purple: #a855f7;
+      --slide-violet: #8b5cf6;
+      --slide-gold: #fbbf24;
+      --slide-green: #10b981;
+    }
+
+    body {
+      background-color: var(--slide-bg);
+      color: #f3f4f6;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      overflow: hidden;
+      height: 100vh;
+      width: 100vw;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Presentation Header */
+    .deck-header {
+      height: 60px;
+      background: rgba(10, 14, 23, 0.88);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 1.5rem;
+      z-index: 100;
+    }
+
+    .deck-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .deck-brand-logo {
+      font-size: 1.4rem;
+    }
+
+    .deck-brand-title {
+      font-size: 1.05rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: #fff;
+    }
+
+    .deck-brand-badge {
+      font-size: 0.7rem;
+      background: rgba(6, 182, 212, 0.15);
+      border: 1px solid rgba(6, 182, 212, 0.4);
+      color: var(--slide-cyan);
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .deck-controls {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    /* Timer Widget */
+    .timer-widget {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      padding: 4px 12px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.9rem;
+      color: var(--slide-cyan);
+    }
+
+    .timer-btn {
+      background: none;
+      border: none;
+      color: #9ca3af;
+      cursor: pointer;
+      font-size: 0.75rem;
+      padding: 2px;
+      transition: color 0.2s;
+    }
+    .timer-btn:hover { color: #fff; }
+
+    /* Action Buttons in Header */
+    .btn-deck {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #e5e7eb;
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: all 0.2s;
+    }
+    .btn-deck:hover {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(255, 255, 255, 0.25);
+      color: #fff;
+    }
+    .btn-deck.active {
+      background: rgba(6, 182, 212, 0.2);
+      border-color: var(--slide-cyan);
+      color: var(--slide-cyan);
+    }
+    .btn-deck.primary {
+      background: linear-gradient(135deg, #06b6d4, #3b82f6);
+      border: none;
+      color: #fff;
+      font-weight: 600;
+    }
+    .btn-deck.primary:hover {
+      box-shadow: 0 0 15px rgba(6, 182, 212, 0.5);
+    }
+
+    /* Main Deck Stage */
+    .deck-stage {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+
+    /* Slide Frame */
+    .slide-viewport {
+      width: 100%;
+      max-width: 1360px;
+      height: 100%;
+      max-height: 760px;
+      position: relative;
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.9), 0 0 40px rgba(6, 182, 212, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: #090f1d;
+    }
+
+    /* Slide Element */
+    .slide {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      pointer-events: none;
+      transform: scale(0.98) translateY(10px);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 3rem 3.5rem;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    .slide.active {
+      opacity: 1;
+      pointer-events: auto;
+      transform: scale(1) translateY(0);
+      z-index: 10;
+    }
+
+    /* ================================================================= */
+    /* TEMPLATE 1: DASHBOARD SLIDE (1ST IMAGE TEMPLATE)                  */
+    /* High-tech blue/cyan cyber shield, servers, telemetry radar        */
+    /* ================================================================= */
+    .template-dashboard {
+      background-image:
+        linear-gradient(135deg, rgba(6, 12, 26, 0.92) 0%, rgba(8, 20, 42, 0.82) 45%, rgba(6, 14, 30, 0.94) 100%),
+        url('/static/images/dashboard_template.jpg');
+      background-size: cover;
+      background-position: center;
+      border: 1px solid rgba(0, 240, 255, 0.25);
+      box-shadow: inset 0 0 100px rgba(0, 240, 255, 0.08);
+    }
+
+    /* ================================================================= */
+    /* TEMPLATE 2: REMAINING SLIDES (2ND IMAGE TEMPLATE)                 */
+    /* Holographic cyber book, magenta/purple shield, floating HUDs     */
+    /* ================================================================= */
+    .template-slides {
+      background-image:
+        linear-gradient(135deg, rgba(12, 10, 28, 0.93) 0%, rgba(20, 10, 36, 0.82) 50%, rgba(10, 8, 24, 0.95) 100%),
+        url('/static/images/slides_template.png');
+      background-size: cover;
+      background-position: center;
+      border: 1px solid rgba(236, 72, 153, 0.25);
+      box-shadow: inset 0 0 100px rgba(168, 85, 247, 0.08);
+    }
+
+    /* Slide Header Block */
+    .slide-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      position: relative;
+      z-index: 2;
+    }
+
+    .slide-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.5rem;
+    }
+    .eyebrow-cyan { color: var(--slide-cyan); }
+    .eyebrow-pink { color: var(--slide-magenta); }
+
+    .slide-title {
+      font-size: 2.35rem;
+      font-weight: 800;
+      line-height: 1.15;
+      color: #fff;
+      letter-spacing: -0.02em;
+    }
+
+    .slide-subtitle {
+      font-size: 1.05rem;
+      color: #cbd5e1;
+      margin-top: 0.5rem;
+      max-width: 820px;
+      line-height: 1.5;
+    }
+
+    .slide-badge-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.95rem;
+      font-weight: 700;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #94a3b8;
+    }
+
+    /* Slide Content Center */
+    .slide-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+      z-index: 2;
+      margin: 1.5rem 0;
+    }
+
+    /* Cards & Grids in Slides */
+    .hud-grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.25rem;
+    }
+
+    .hud-grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+
+    .hud-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.75rem;
+      align-items: center;
+    }
+
+    /* Holographic Floating HUD Card */
+    .hud-card {
+      background: rgba(15, 23, 42, 0.72);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 14px;
+      padding: 1.35rem;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+    .hud-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(0, 240, 255, 0.4);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+    .hud-card.pink-glow:hover {
+      border-color: rgba(236, 72, 153, 0.5);
+      box-shadow: 0 10px 30px rgba(236, 72, 153, 0.15);
+    }
+
+    .hud-icon {
+      font-size: 1.8rem;
+      margin-bottom: 0.75rem;
+      display: inline-block;
+    }
+
+    .hud-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.4rem;
+    }
+
+    .hud-desc {
+      font-size: 0.85rem;
+      color: #94a3b8;
+      line-height: 1.5;
+    }
+
+    .hud-pill {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-top: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .pill-cyan { background: rgba(6, 182, 212, 0.2); color: var(--slide-cyan); }
+    .pill-pink { background: rgba(236, 72, 153, 0.2); color: #f472b6; }
+    .pill-red { background: rgba(239, 68, 68, 0.2); color: #f87171; }
+    .pill-green { background: rgba(16, 185, 129, 0.2); color: #34d399; }
+    .pill-gold { background: rgba(251, 191, 36, 0.2); color: #fcd34d; }
+
+    /* Slide 1 Dashboard Specials */
+    .dashboard-hero-box {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .metric-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .metric-pill {
+      background: rgba(6, 182, 212, 0.08);
+      border: 1px solid rgba(6, 182, 212, 0.3);
+      border-radius: 10px;
+      padding: 1rem;
+      text-align: center;
+    }
+    .metric-num {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--slide-cyan);
+      line-height: 1.1;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .metric-lbl {
+      font-size: 0.75rem;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-top: 4px;
+    }
+
+    /* Live Telemetry Radar Card */
+    .radar-card {
+      background: rgba(7, 18, 38, 0.75);
+      border: 1px solid rgba(6, 182, 212, 0.3);
+      border-radius: 16px;
+      padding: 1.5rem;
+      box-shadow: 0 0 35px rgba(6, 182, 212, 0.15);
+      position: relative;
+    }
+
+    .radar-pulse {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: #34d399;
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+    }
+    .pulse-dot {
+      width: 8px;
+      height: 8px;
+      background: #10b981;
+      border-radius: 50%;
+      animation: pulse 1.8s infinite;
+    }
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+      70% { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+    }
+
+    /* Slide Bottom Bar */
+    .slide-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding-top: 1rem;
+      font-size: 0.8rem;
+      color: #64748b;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Footer Controls */
+    .deck-footer {
+      height: 65px;
+      background: rgba(10, 14, 23, 0.88);
+      backdrop-filter: blur(16px);
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2rem;
+      z-index: 100;
+    }
+
+    .slide-dots {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .slide-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.2);
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .slide-dot:hover {
+      background: rgba(255, 255, 255, 0.5);
+    }
+    .slide-dot.active {
+      background: var(--slide-cyan);
+      box-shadow: 0 0 10px var(--slide-cyan);
+      width: 28px;
+      border-radius: 6px;
+    }
+    .slide-dot.active.template2 {
+      background: var(--slide-magenta);
+      box-shadow: 0 0 10px var(--slide-magenta);
+    }
+
+    .nav-btn-group {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .btn-nav {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #fff;
+      padding: 8px 18px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: all 0.2s;
+    }
+    .btn-nav:hover:not(:disabled) {
+      background: rgba(255, 255, 255, 0.18);
+      border-color: #fff;
+    }
+    .btn-nav:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+    .btn-nav.primary {
+      background: linear-gradient(135deg, #06b6d4, #3b82f6);
+      border: none;
+    }
+    .btn-nav.primary.pink-theme {
+      background: linear-gradient(135deg, #ec4899, #8b5cf6);
+    }
+
+    /* Speaker Notes Drawer */
+    .notes-drawer {
+      position: fixed;
+      bottom: 65px;
+      left: 0;
+      right: 0;
+      background: rgba(8, 12, 22, 0.96);
+      backdrop-filter: blur(20px);
+      border-top: 1px solid rgba(6, 182, 212, 0.3);
+      padding: 1.25rem 2rem;
+      z-index: 90;
+      transform: translateY(110%);
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.8);
+      max-height: 240px;
+      overflow-y: auto;
+    }
+    .notes-drawer.open {
+      transform: translateY(0);
+    }
+    .notes-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--slide-cyan);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .notes-body {
+      font-size: 0.95rem;
+      color: #e2e8f0;
+      line-height: 1.6;
+    }
+    .notes-timing {
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--slide-gold);
+      font-size: 0.8rem;
+    }
+
+    /* Code & Terminal Snippet Box */
+    .terminal-box {
+      background: rgba(0, 0, 0, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      color: #93c5fd;
+      line-height: 1.4;
+    }
+
+    /* Architecture Flow Grid */
+    .arch-flow {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-top: 1rem;
+    }
+    .arch-step {
+      text-align: center;
+      flex: 1;
+    }
+    .arch-step-icon {
+      font-size: 1.75rem;
+      margin-bottom: 0.4rem;
+    }
+    .arch-step-title {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: #fff;
+    }
+    .arch-step-sub {
+      font-size: 0.75rem;
+      color: #94a3b8;
+      margin-top: 2px;
+    }
+    .arch-arrow {
+      font-size: 1.25rem;
+      color: var(--slide-magenta);
+      padding: 0 0.75rem;
+    }
+
+    /* Comparison Table */
+    .roi-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+    .roi-table th {
+      text-align: left;
+      padding: 10px 14px;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #94a3b8;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .roi-table td {
+      padding: 12px 14px;
+      font-size: 0.9rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    /* Keyboard Hints Overlay */
+    .key-hint {
+      display: inline-block;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 4px;
+      padding: 1px 6px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      color: #cbd5e1;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ================================================================= -->
+  <!-- TOP CONTROL HEADER                                                -->
+  <!-- ================================================================= -->
+  <header class="deck-header">
+    <div class="deck-brand">
+      <span class="deck-brand-logo">🛡️</span>
+      <span class="deck-brand-title">BrandShield</span>
+      <span class="deck-brand-badge">HACXLERATE 2026 #03</span>
+      <span style="font-size: 0.8rem; color: #64748b; margin-left: 0.5rem;">Powered by Kampus.vc</span>
+    </div>
+
+    <!-- Center Presentation Progress -->
+    <div style="font-size: 0.9rem; font-weight: 600; color: #cbd5e1;">
+      <span id="header-slide-indicator">Slide 1 of 8</span>: <span id="header-slide-name" style="color:var(--slide-cyan);">Threat Dashboard</span>
+    </div>
+
+    <!-- Right Controls -->
+    <div class="deck-controls">
+      <!-- 5-Minute Pitch Timer -->
+      <div class="timer-widget" title="Pitch Presentation Timer">
+        <span>⏱️</span>
+        <span id="pitch-timer">05:00</span>
+        <button class="timer-btn" onclick="toggleTimer()" id="btn-timer-toggle" title="Play/Pause">▶</button>
+        <button class="timer-btn" onclick="resetTimer()" title="Reset">↺</button>
+      </div>
+
+      <!-- Speaker Script Toggle -->
+      <button class="btn-deck" onclick="toggleSpeakerNotes()" id="btn-notes" title="Toggle Speaker Notes (N)">
+        <span>🎙️</span> Notes <span class="key-hint">N</span>
+      </button>
+
+      <!-- Fullscreen Toggle -->
+      <button class="btn-deck" onclick="toggleFullScreen()" id="btn-fullscreen" title="Toggle Fullscreen (F)">
+        <span>⛶</span> Fullscreen <span class="key-hint">F</span>
+      </button>
+
+      <!-- Jump to Live Web Dashboard -->
+      <a href="/" class="btn-deck primary" style="text-decoration:none;">
+        <span>🚀</span> Live App ↗
+      </a>
+    </div>
+  </header>
+
+
+  <!-- ================================================================= -->
+  <!-- MAIN PRESENTATION STAGE                                           -->
+  <!-- ================================================================= -->
+  <main class="deck-stage">
+    <div class="slide-viewport">
+
+      <!-- =============================================================== -->
+      <!-- SLIDE 1: THREAT DASHBOARD (1ST IMAGE TEMPLATE)                  -->
+      <!-- Uses dashboard_template.jpg: Dark blue, cyan shield, telemetry  -->
+      <!-- =============================================================== -->
+      <section class="slide template-dashboard active" id="slide-1" data-title="Threat Dashboard" data-time="0:00 - 0:45">
+        <div class="slide-top">
+          <div>
+            <div class="slide-eyebrow eyebrow-cyan">
+              <span>●</span> TEMPLATE 1: THREAT INTELLIGENCE DASHBOARD
+            </div>
+            <h1 class="slide-title">BrandShield: Autonomous Exterior Defense</h1>
+            <p class="slide-subtitle">
+              Continuous perimeter monitoring, lookalike domain hunting, explainable phishing risk scoring, and 1-click legal takedown automation.
+            </p>
+          </div>
+          <div class="slide-badge-num">SLIDE 01 / 08</div>
+        </div>
+
+        <div class="slide-body">
+          <div class="dashboard-hero-box">
+            <!-- Left Pitch Core -->
+            <div>
+              <div style="display:flex; gap:0.5rem; margin-bottom:1rem;">
+                <span class="hud-pill pill-cyan">Live Threat Grid</span>
+                <span class="hud-pill pill-gold">RapidFuzz Engine</span>
+                <span class="hud-pill pill-green">Autonomous Takedowns</span>
+              </div>
+              <p style="font-size:1.05rem; color:#e2e8f0; line-height:1.6;">
+                Every day, cybercriminals launch attacks that bypass internal company firewalls completely: registering look-alike domains, spoofing bank logins, and creating fake customer care profiles.
+              </p>
+              <p style="font-size:0.95rem; color:#94a3b8; margin-top:0.75rem; line-height:1.5;">
+                <strong>BrandShield</strong> delivers 24/7 external brand perimeter protection, making enterprise-grade defense accessible to growing organizations starting at just $29/month.
+              </p>
+
+              <!-- Metric Row -->
+              <div class="metric-row">
+                <div class="metric-pill">
+                  <div class="metric-num">2</div>
+                  <div class="metric-lbl">Monitored Brands</div>
+                </div>
+                <div class="metric-pill">
+                  <div class="metric-num">100<span style="font-size:1.1rem;">%</span></div>
+                  <div class="metric-lbl">Explainable Score</div>
+                </div>
+                <div class="metric-pill">
+                  <div class="metric-num">&lt; 6h</div>
+                  <div class="metric-lbl">Takedown SLA</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right Telemetry Radar Card -->
+            <div class="radar-card">
+              <div class="radar-pulse">
+                <span class="pulse-dot"></span>
+                <span>RADAR TELEMETRY: REAL-TIME ACTIVE</span>
+              </div>
+
+              <div style="font-size:0.85rem; color:#94a3b8; margin-bottom:0.75rem;">
+                Target: <strong style="color:#fff;">ABC Bank &amp; Kampus VC Perimeter</strong>
+              </div>
+
+              <div class="terminal-box" style="margin-bottom:0.75rem;">
+                [+] Typosquat Engine: 35 variants scanned<br>
+                [!] CRITICAL: abcbank-secure-netbanking.top<br>
+                [+] DNS Resolution: 185.220.101.5 (RU-Bulletproof)<br>
+                [+] Phishing Score: 96/100 (HIGH ENTROPY + HTTP)
+              </div>
+
+              <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.75rem; color:#64748b;">
+                <span>Heuristic Model: V2.6 Online</span>
+                <span style="color:var(--slide-cyan);">WHOIS Scraper: Ready</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="slide-bottom">
+          <span>HACXLERATE 2026 Challenge #03: Digital Risk Protection</span>
+          <span>1st Image Template • Cyber Defense Command Center</span>
+        </div>
+      </section>
+
+
+      <!-- =============================================================== -->
+      <!-- SLIDE 2: THE PROBLEM (2ND IMAGE TEMPLATE)                       -->
+      <!-- Uses slides_template.png: Holographic book & magenta shield     -->
+      <!-- =============================================================== -->
+      <section class="slide template-slides" id="slide-2" data-title="The Problem" data-time="0:00 - 0:45">
+        <div class="slide-top">
+          <div>
+            <div class="slide-eyebrow eyebrow-pink">
+              <span>●</span> TEMPLATE 2: REMAINING SLIDES • THE THREAT LANDSCAPE
+            </div>
+            <h2 class="slide-title">The Problem: Corporate Firewalls Are Bypassed</h2>
+            <p class="slide-subtitle">
+              Attacks no longer target internal servers directly—scammers weaponize public internet perimeters against brands and consumers.
+            </p>
+          </div>
+          <div class="slide-badge-num">SLIDE 02 / 08</div>
+        </div>
+
+        <div class="slide-body">
+          <div class="hud-grid-4">
+            <!-- Problem 1 -->
+            <div class="hud-card pink-glow">
+              <span class="hud-icon">🔤</span>
+              <h3 class="hud-title">Homoglyphs &amp; Typosquats</h3>
+              <p class="hud-desc">
+                Attackers register subtle visual variations with one character swapped (e.g., <code>karnpus.vc</code> or <code>abc-bank-login.com</code>) to mislead consumers.
+              </p>
+              <span class="hud-pill pill-red">Critical Vector</span>
+            </div>
+
+            <!-- Problem 2 -->
+            <div class="hud-card pink-glow">
+              <span class="hud-icon">🎣</span>
+              <h3 class="hud-title">Deceptive Phishing Portals</h3>
+              <p class="hud-desc">
+                Cloned login pages steal NetBanking credentials, OTPs, and corporate passwords directly from unsuspecting users outside company VPNs.
+              </p>
+              <span class="hud-pill pill-red">Credential Theft</span>
+            </div>
+
+            <!-- Problem 3 -->
+            <div class="hud-card pink-glow">
+              <span class="hud-icon">👥</span>
+              <h3 class="hud-title">Social Media Impersonators</h3>
+              <p class="hud-desc">
+                Unauthorized fake support handles, scam giveaway pages, and deceptive profiles scamming users on Instagram, X/Twitter, and Facebook.
+              </p>
+              <span class="hud-pill pill-gold">Brand Dilution</span>
+            </div>
+
+            <!-- Problem 4 -->
+            <div class="hud-card pink-glow">
+              <span class="hud-icon">💸</span>
+              <h3 class="hud-title">The SMB Resource Void</h3>
+              <p class="hud-desc">
+                Large banks spend millions on 24/7 manual SOC analysts ($85k+/yr per head). SMBs, fintechs, and startups are left with zero automated defense.
+              </p>
+              <span class="hud-pill pill-cyan">Market Void</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="slide-bottom">
+          <span>HACXLERATE 2026 Challenge #03</span>
+          <span>2nd Image Template • Holographic Cyber Matrix Manual</span>
+        </div>
+      </section>
+
+
+      <!-- =============================================================== -->
+      <!-- SLIDE 3: THE SOLUTION (2ND IMAGE TEMPLATE)                      -->
+      <!-- =============================================================== -->
+      <section class="slide template-slides" id="slide-3" data-title="The Solution" data-time="0:45 - 1:30">
+        <div class="slide-top">
+          <div>
+            <div class="slide-eyebrow eyebrow-pink">
+              <span>●</span> TEMPLATE 2: REMAINING SLIDES • AUTONOMOUS ARCHITECTURE
+            </div>
+            <h2 class="slide-title">The Solution: BrandShield Autonomous Defense</h2>
+            <p class="slide-subtitle">
+              A comprehensive 4-pillar Digital Risk Protection Platform acting as an exterior perimeter defense for modern enterprises.
+            </p>
+          </div>
+          <div class="slide-badge-num">SLIDE 03 / 08</div>
+        </div>
+
+        <div class="slide-body">
+          <div class="hud-grid-4">
+            <!-- Pillar 1 -->
+            <div class="hud-card pink-glow">
+              <span class="hud-icon">🏢</span>
+              <h3 class="hud-title">1. Ground Truth Matrix</h3>
+              <p class="hud-desc">
+                Organization registers official domains, trademarks, and verified social footprints as the immutable reference ground truth.
+              </p>
+              <span class="hud-pill pill-cyan">Golden Baseline</span>
+            </div>
+
+            <!-- Pillar 2 -->
+            <div class="hud-card pink-glow">
+              <span class="hud-icon">🌐</span>
+              <h3 class="hud-title">2. Look-Alike Hunter</h3>
+              <p class="hud-desc">
+                Autonomous engine generates homoglyphs, combosquats, and swaps TLDs using RapidFuzz character proximity with live DNS resolution checks.
+              </p>
+              <span class="hud-pill pill-pink">Typosquat Radar</span>
+            </div>
+
+            <!-- Pillar 3 -->
+            <div class="hud-card pink-glow">
+              <span class="hud-icon">🔍</span>
+              <h3 class="hud-title">3. Explainable AI Scorer</h3>
+              <p class="hud-desc">
+                Evaluates URLs on a 0–100 scale. Zero black boxes: itemized diagnostic cards detailing entropy, protocol, and keyword masquerading.
+              </p>
+              <span class="hud-pill pill-gold">0-100 Heuristics</span>
+            </div>
+
+            <!-- Pillar 4 -->
+            <div class="hud-card pink-glow">
+              <span class="hud-icon">⚖️</span>
+              <h3 class="hud-title">4. 1-Click Takedowns</h3>
+              <p class="hud-desc">
+                Extracts registrar abuse contacts from WHOIS records and auto-generates legally binding Cease &amp; Desist / DMCA notices in seconds.
+              </p>
+              <span class="hud-pill pill-green">Legal Enforcement</span>
+            </div>
+          </div>
+
+          <!-- Architecture Flow Banner -->
+          <div class="arch-flow">
+            <div class="arch-step">
+              <div class="arch-step-icon">🏢</div>
+              <div class="arch-step-title">Brand Ground Truth</div>
+              <div class="arch-step-sub">Baseline Defined</div>
+            </div>
+            <div class="arch-arrow">➔</div>
+            <div class="arch-step">
+              <div class="arch-step-icon">⚡</div>
+              <div class="arch-step-title">Autonomous Hunting</div>
+              <div class="arch-step-sub">Fuzzy &amp; DNS Scanning</div>
+            </div>
+            <div class="arch-arrow">➔</div>
+            <div class="arch-step">
+              <div class="arch-step-icon">🧠</div>
+              <div class="arch-step-title">Diagnostic Scoring</div>
+              <div class="arch-step-sub">0–100 Explainable Score</div>
+            </div>
+            <div class="arch-arrow">➔</div>
+            <div class="arch-step">
+              <div class="arch-step-icon">🛡️</div>
+              <div class="arch-step-title">1-Click Takedown</div>
+              <div class="arch-step-sub">Abuse Desk Notice Sent</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="slide-bottom">
+          <span>HACXLERATE 2026 Challenge #03</span>
+          <span>2nd Image Template • 4-Pillar Autonomous Architecture</span>
+        </div>
+      </section>
+
+
+      <!-- =============================================================== -->
+      <!-- SLIDE 4: LIVE ENGINES & URL SCORER (2ND IMAGE TEMPLATE)         -->
+      <!-- =============================================================== -->
+      <section class="slide template-slides" id="slide-4" data-title="Live Threat Engines" data-time="1:30 - 2:30">
+        <div class="slide-top">
+          <div>
+            <div class="slide-eyebrow eyebrow-pink">
+              <span>●</span> TEMPLATE 2: REMAINING SLIDES • DETECTION ENGINES
+            </div>
+            <h2 class="slide-title">Live Engines: Explainable Phishing Scoring</h2>
+            <p class="slide-subtitle">
+              Every score is backed by transparent diagnostic evidence cards—giving analysts clear proof for takedown requests.
+            </p>
+          </div>
+          <div class="slide-badge-num">SLIDE 04 / 08</div>
+        </div>
+
+        <div class="slide-body">
+          <div class="hud-grid-2">
+            <!-- Left URL Diagnostic Evidence -->
+            <div class="hud-card pink-glow">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem;">
+                <span class="hud-pill pill-red">CRITICAL RISK: 96 / 100</span>
+                <span style="font-family:'JetBrains Mono',monospace; font-size:0.8rem; color:#94a3b8;">abcbank-secure-netbanking.top</span>
+              </div>
+              <h3 style="font-size:1.15rem; font-weight:700; color:#fff; margin-bottom:0.75rem;">
+                🚨 Malicious Phishing Verdict Breakdown:
+              </h3>
+              <div style="display:flex; flex-direction:column; gap:0.5rem; font-size:0.85rem;">
+                <div style="background:rgba(239, 68, 68, 0.15); border-left:3px solid #ef4444; padding:6px 12px; border-radius:4px;">
+                  <strong style="color:#fca5a5;">Protocol Check (+20 Risk):</strong> Unencrypted HTTP scheme harvesting user credentials.
+                </div>
+                <div style="background:rgba(239, 68, 68, 0.15); border-left:3px solid #ef4444; padding:6px 12px; border-radius:4px;">
+                  <strong style="color:#fca5a5;">Brand Masquerade (+35 Risk):</strong> Contains protected keyword <code>netbanking</code> on unauthorized TLD.
+                </div>
+                <div style="background:rgba(245, 158, 11, 0.15); border-left:3px solid #f59e0b; padding:6px 12px; border-radius:4px;">
+                  <strong style="color:#fcd34d;">Abuse TLD (+15 Risk):</strong> Hosted on <code>.top</code> (high fraud reputation registrar).
+                </div>
+                <div style="background:rgba(245, 158, 11, 0.15); border-left:3px solid #f59e0b; padding:6px 12px; border-radius:4px;">
+                  <strong style="color:#fcd34d;">Shannon Entropy (+10 Risk):</strong> Obfuscated URL query parameters.
+                </div>
+              </div>
+            </div>
+
+            <!-- Right Lookalike Typosquat Table -->
+            <div class="hud-card pink-glow">
+              <h3 style="font-size:1.1rem; font-weight:700; color:#fff; margin-bottom:0.75rem;">
+                🌐 Lookalike &amp; Homoglyph Hunter Sample:
+              </h3>
+              <table class="roi-table" style="margin-top:0;">
+                <thead>
+                  <tr>
+                    <th>Variant Domain</th>
+                    <th>Technique</th>
+                    <th>Match</th>
+                    <th>DNS Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>abcbank-netbanking.top</code></td>
+                    <td><span class="hud-pill pill-red">Combosquat</span></td>
+                    <td style="color:var(--slide-cyan);">94%</td>
+                    <td style="color:#f87171;">● ACTIVE A-REC</td>
+                  </tr>
+                  <tr>
+                    <td><code>αbcbank.com</code></td>
+                    <td><span class="hud-pill pill-gold">Homoglyph</span></td>
+                    <td style="color:var(--slide-cyan);">96%</td>
+                    <td style="color:#f87171;">● ACTIVE A-REC</td>
+                  </tr>
+                  <tr>
+                    <td><code>karnpus.vc</code></td>
+                    <td><span class="hud-pill pill-pink">Typosquat</span></td>
+                    <td style="color:var(--slide-cyan);">89%</td>
+                    <td style="color:#94a3b8;">○ NXDOMAIN</td>
+                  </tr>
+                  <tr>
+                    <td><code>kampus-apply-grant.online</code></td>
+                    <td><span class="hud-pill pill-red">Phishing Port</span></td>
+                    <td style="color:var(--slide-cyan);">88%</td>
+                    <td style="color:#f87171;">● ACTIVE A-REC</td>
+                  </tr>
+                </tbody>
+              </table>
+              <div style="margin-top:1rem; text-align:right;">
+                <a href="/#scanner-view" class="btn-deck" style="display:inline-flex; font-size:0.8rem; text-decoration:none;">
+                  Test Live URL Scanner In App ➔
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="slide-bottom">
+          <span>HACXLERATE 2026 Challenge #03</span>
+          <span>2nd Image Template • Heuristics &amp; Explainability</span>
+        </div>
+      </section>
+
+
+      <!-- =============================================================== -->
+      <!-- SLIDE 5: 1-CLICK TAKEDOWNS & INCIDENTS (2ND IMAGE TEMPLATE)      -->
+      <!-- =============================================================== -->
+      <section class="slide template-slides" id="slide-5" data-title="1-Click Takedowns" data-time="2:30 - 3:30">
+        <div class="slide-top">
+          <div>
+            <div class="slide-eyebrow eyebrow-pink">
+              <span>●</span> TEMPLATE 2: REMAINING SLIDES • INCIDENT REMEDIATION
+            </div>
+            <h2 class="slide-title">1-Click Legal Takedown &amp; Remediation Desk</h2>
+            <p class="slide-subtitle">
+              Turn hours of legal notice drafting into a single click: pre-formatted Cease &amp; Desist letters dispatched directly to registrar abuse desks.
+            </p>
+          </div>
+          <div class="slide-badge-num">SLIDE 05 / 08</div>
+        </div>
+
+        <div class="slide-body">
+          <div class="hud-grid-2">
+            <!-- Left Incident Workflow -->
+            <div>
+              <div class="hud-card pink-glow" style="margin-bottom:1rem;">
+                <span class="hud-icon">⚖️</span>
+                <h3 class="hud-title">Incident Lifecycle State Machine</h3>
+                <div style="display:flex; align-items:center; gap:0.75rem; margin-top:0.75rem;">
+                  <span class="hud-pill pill-red" style="font-size:0.85rem; padding:4px 10px;">1. OPEN</span>
+                  <span style="color:#94a3b8;">➔</span>
+                  <span class="hud-pill pill-gold" style="font-size:0.85rem; padding:4px 10px;">2. INVESTIGATING</span>
+                  <span style="color:#94a3b8;">➔</span>
+                  <span class="hud-pill pill-green" style="font-size:0.85rem; padding:4px 10px;">3. RESOLVED</span>
+                </div>
+                <p class="hud-desc" style="margin-top:0.75rem;">
+                  Complete audit trail tracking when threats were flagged, triage classification, notice dispatches, and final registrar suspensions.
+                </p>
+              </div>
+
+              <div class="hud-card pink-glow">
+                <span class="hud-icon">📑</span>
+                <h3 class="hud-title">Automated Abuse Routing</h3>
+                <p class="hud-desc">
+                  BrandShield maps hosting ASNs and DNS providers to authoritative abuse contacts (Cloudflare, Namecheap, GoDaddy, Hostinger, AWS).
+                </p>
+                <div style="margin-top:0.5rem; font-family:'JetBrains Mono',monospace; font-size:0.8rem; color:var(--slide-cyan);">
+                  Recipient: abuse@cloudflare.com • abuse@namecheap.com
+                </div>
+              </div>
+            </div>
+
+            <!-- Right Notice Preview -->
+            <div class="hud-card pink-glow">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
+                <span class="hud-pill pill-green">AUTO-GENERATED LEGAL NOTICE</span>
+                <span style="font-size:0.75rem; color:#94a3b8;">ICANN &amp; DMCA Compliant</span>
+              </div>
+              <div class="terminal-box" style="font-size:0.75rem; max-height:260px; overflow-y:auto; line-height:1.5;">
+<strong>To:</strong> abuse@cloudflare.com<br>
+<strong>Subject:</strong> URGENT: Cease &amp; Desist / Phishing Infringement Notice - abcbank-secure-netbanking.top<br><br>
+Dear Cloudflare Abuse Team,<br><br>
+This constitutes formal notice under ICANN Registrar Accreditation Agreement and DMCA provisions regarding fraudulent activity targeting ABC Bank.<br><br>
+• Infringing Domain: http://abcbank-secure-netbanking.top<br>
+• Host IP: 185.220.101.5<br>
+• Infringement Type: Brand Impersonation &amp; Credential Harvesting Phishing<br>
+• Diagnostic Score: 96/100 (Unencrypted HTTP, deceptive netbanking keywords)<br><br>
+We demand the immediate suspension of DNS resolution and hosting services for this domain to mitigate ongoing consumer fraud.<br><br>
+Respectfully,<br>
+BrandShield Automated Legal Response on behalf of ABC Bank
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="slide-bottom">
+          <span>HACXLERATE 2026 Challenge #03</span>
+          <span>2nd Image Template • 1-Click Remediation Desk</span>
+        </div>
+      </section>
+
+
+      <!-- =============================================================== -->
+      <!-- SLIDE 6: BUSINESS MODEL & ROI (2ND IMAGE TEMPLATE)              -->
+      <!-- =============================================================== -->
+      <section class="slide template-slides" id="slide-6" data-title="Business Model & Pricing" data-time="3:30 - 4:15">
+        <div class="slide-top">
+          <div>
+            <div class="slide-eyebrow eyebrow-pink">
+              <span>●</span> TEMPLATE 2: REMAINING SLIDES • COMMERCIAL SUSTAINABILITY
+            </div>
+            <h2 class="slide-title">Business Model &amp; Massive Customer ROI</h2>
+            <p class="slide-subtitle">
+              Predictable monthly recurring subscription scaled by protected assets—democratizing brand defense for SMBs.
+            </p>
+          </div>
+          <div class="slide-badge-num">SLIDE 06 / 08</div>
+        </div>
+
+        <div class="slide-body">
+          <div class="hud-grid-3">
+            <!-- Tier 1 -->
+            <div class="hud-card pink-glow">
+              <span class="hud-pill pill-cyan">Starter Shield</span>
+              <div style="font-size:2rem; font-weight:800; color:#fff; margin:0.5rem 0;">
+                $29 <span style="font-size:0.9rem; color:#94a3b8; font-weight:400;">/ month</span>
+              </div>
+              <p class="hud-desc">For early-stage startups &amp; single brands.</p>
+              <ul style="margin-top:0.75rem; font-size:0.8rem; color:#cbd5e1; list-style:none; padding-left:0; line-height:1.8;">
+                <li>✓ 1 Monitored Brand Domain</li>
+                <li>✓ Daily Look-Alike Hunter Scans</li>
+                <li>✓ Unlimited Public URL Scans</li>
+                <li>✓ Basic DMCA Notice Template</li>
+              </ul>
+            </div>
+
+            <!-- Tier 2 Featured -->
+            <div class="hud-card pink-glow" style="border-color:var(--slide-cyan); box-shadow:0 0 25px rgba(6, 182, 212, 0.2);">
+              <span class="hud-pill pill-pink">Most Popular</span>
+              <div style="font-size:2rem; font-weight:800; color:var(--slide-cyan); margin:0.5rem 0;">
+                $99 <span style="font-size:0.9rem; color:#94a3b8; font-weight:400;">/ month</span>
+              </div>
+              <p class="hud-desc">For fast-growing brands &amp; fintechs.</p>
+              <ul style="margin-top:0.75rem; font-size:0.8rem; color:#cbd5e1; list-style:none; padding-left:0; line-height:1.8;">
+                <li>✓ Up to 5 Monitored Brand Assets</li>
+                <li>✓ Real-Time DNS &amp; Active Host Alerts</li>
+                <li>✓ Social Media Impersonator Watch</li>
+                <li>✓ 5 Guided 1-Click Takedowns/mo</li>
+              </ul>
+            </div>
+
+            <!-- Tier 3 -->
+            <div class="hud-card pink-glow">
+              <span class="hud-pill pill-gold">Enterprise Sentinel</span>
+              <div style="font-size:2rem; font-weight:800; color:#fff; margin:0.5rem 0;">
+                $299 <span style="font-size:0.9rem; color:#94a3b8; font-weight:400;">/ month</span>
+              </div>
+              <p class="hud-desc">For banks, multi-brand holdings &amp; orgs.</p>
+              <ul style="margin-top:0.75rem; font-size:0.8rem; color:#cbd5e1; list-style:none; padding-left:0; line-height:1.8;">
+                <li>✓ Unlimited Brand Assets &amp; Domains</li>
+                <li>✓ Priority Takedown SLA (&lt; 6 Hours)</li>
+                <li>✓ Dark Web Credential Stream</li>
+                <li>✓ Full REST API &amp; Webhook Integration</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- ROI Comparison Strip -->
+          <div style="background:rgba(15, 23, 42, 0.75); border:1px solid rgba(255, 255, 255, 0.1); border-radius:12px; padding:1rem 1.5rem; margin-top:1.25rem; display:flex; justify-content:space-between; align-items:center;">
+            <div>
+              <span style="font-size:0.8rem; color:#94a3b8; text-transform:uppercase;">Traditional Enterprise Approach</span>
+              <div style="font-size:1.2rem; font-weight:700; color:#f87171;">Dedicated In-House SOC Analyst: $85,000+ / yr</div>
+            </div>
+            <div style="font-size:1.5rem; color:var(--slide-cyan);">⚡ VS ⚡</div>
+            <div>
+              <span style="font-size:0.8rem; color:#94a3b8; text-transform:uppercase;">BrandShield Automated Defense</span>
+              <div style="font-size:1.2rem; font-weight:700; color:#34d399;">Starts at $348 – $1,188 / yr (Saves 98% Overhead)</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="slide-bottom">
+          <span>HACXLERATE 2026 Challenge #03</span>
+          <span>2nd Image Template • SaaS Pricing &amp; High Customer ROI</span>
+        </div>
+      </section>
+
+
+      <!-- =============================================================== -->
+      <!-- SLIDE 7: KEY DIFFERENTIATORS & ROADMAP (2ND IMAGE TEMPLATE)     -->
+      <!-- =============================================================== -->
+      <section class="slide template-slides" id="slide-7" data-title="Moats & Roadmap" data-time="4:15 - 5:00">
+        <div class="slide-top">
+          <div>
+            <div class="slide-eyebrow eyebrow-pink">
+              <span>●</span> TEMPLATE 2: REMAINING SLIDES • STRATEGIC MOAT &amp; VISION
+            </div>
+            <h2 class="slide-title">Key Differentiators &amp; Product Roadmap</h2>
+            <p class="slide-subtitle">
+              Engineered for rapid adoption, legal efficacy, and zero setup friction.
+            </p>
+          </div>
+          <div class="slide-badge-num">SLIDE 07 / 08</div>
+        </div>
+
+        <div class="slide-body">
+          <div class="hud-grid-2">
+            <!-- Left: 3 Unfair Differentiators -->
+            <div>
+              <h3 style="font-size:1.1rem; font-weight:700; color:#fff; margin-bottom:0.75rem;">
+                🛡️ Why BrandShield Wins:
+              </h3>
+              <div style="display:flex; flex-direction:column; gap:0.75rem;">
+                <div class="hud-card pink-glow" style="padding:1rem;">
+                  <strong style="color:var(--slide-cyan);">1. Explainable AI Scoring:</strong>
+                  <p style="font-size:0.8rem; color:#94a3b8; margin-top:2px;">
+                    No opaque black-box numbers. Every alert carries an itemized diagnostic card accepted by abuse desks.
+                  </p>
+                </div>
+                <div class="hud-card pink-glow" style="padding:1rem;">
+                  <strong style="color:var(--slide-magenta);">2. Integrated 1-Click Remediation:</strong>
+                  <p style="font-size:0.8rem; color:#94a3b8; margin-top:2px;">
+                    Unlike passive monitoring tools, BrandShield bridges the gap with auto-addressed legal takedown notices.
+                  </p>
+                </div>
+                <div class="hud-card pink-glow" style="padding:1rem;">
+                  <strong style="color:var(--slide-gold);">3. Under 60-Second Onboarding:</strong>
+                  <p style="font-size:0.8rem; color:#94a3b8; margin-top:2px;">
+                    Zero DNS TXT records or complex agents required. Enter a brand name and URL to launch immediate external defense.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right: Strategic Roadmap -->
+            <div>
+              <h3 style="font-size:1.1rem; font-weight:700; color:#fff; margin-bottom:0.75rem;">
+                🚀 Horizon Product Roadmap:
+              </h3>
+              <div style="display:flex; flex-direction:column; gap:0.75rem;">
+                <div class="hud-card pink-glow" style="padding:1rem;">
+                  <div style="display:flex; justify-content:space-between;">
+                    <strong style="color:#fff;">Q2 2026: Certificate Transparency (CT) Stream</strong>
+                    <span class="hud-pill pill-cyan">In Progress</span>
+                  </div>
+                  <p style="font-size:0.8rem; color:#94a3b8; margin-top:2px;">
+                    Live streaming of newly minted SSL certificates worldwide to flag lookalikes within milliseconds of issuance.
+                  </p>
+                </div>
+                <div class="hud-card pink-glow" style="padding:1rem;">
+                  <div style="display:flex; justify-content:space-between;">
+                    <strong style="color:#fff;">Q3 2026: Webhook &amp; SOC Dispatches</strong>
+                    <span class="hud-pill pill-gold">Next</span>
+                  </div>
+                  <p style="font-size:0.8rem; color:#94a3b8; margin-top:2px;">
+                    Real-time incident dispatches directly into Slack, Microsoft Teams, and Splunk/CrowdStrike SIEM feeds.
+                  </p>
+                </div>
+                <div class="hud-card pink-glow" style="padding:1rem;">
+                  <div style="display:flex; justify-content:space-between;">
+                    <strong style="color:#fff;">Q4 2026: Consumer Browser Extension</strong>
+                    <span class="hud-pill pill-pink">Planned</span>
+                  </div>
+                  <p style="font-size:0.8rem; color:#94a3b8; margin-top:2px;">
+                    Protecting everyday customers from entering credentials into detected lookalikes with active blocking badges.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="slide-bottom">
+          <span>HACXLERATE 2026 Challenge #03</span>
+          <span>2nd Image Template • Competitive Moats &amp; Roadmap</span>
+        </div>
+      </section>
+
+
+      <!-- =============================================================== -->
+      <!-- SLIDE 8: JUDGE Q&A & COMPLIANCE (2ND IMAGE TEMPLATE)            -->
+      <!-- =============================================================== -->
+      <section class="slide template-slides" id="slide-8" data-title="Judge Q&A & Compliance" data-time="Q&A Session">
+        <div class="slide-top">
+          <div>
+            <div class="slide-eyebrow eyebrow-pink">
+              <span>●</span> TEMPLATE 2: REMAINING SLIDES • EVALUATOR ALIGNMENT
+            </div>
+            <h2 class="slide-title">Top Judge Questions &amp; Defensive Compliance</h2>
+            <p class="slide-subtitle">
+              Strictly defensive, privacy-compliant, and built to enterprise governance standards.
+            </p>
+          </div>
+          <div class="slide-badge-num">SLIDE 08 / 08</div>
+        </div>
+
+        <div class="slide-body">
+          <div class="hud-grid-3">
+            <!-- QA 1 -->
+            <div class="hud-card pink-glow">
+              <span class="hud-icon">🎯</span>
+              <h3 class="hud-title">Q1: How do you prevent False Positives?</h3>
+              <p class="hud-desc">
+                <em>"We use multi-factor weighting. Similarity score alone never triggers a critical alert. We combine RapidFuzz string proximity, live DNS resolution, presence of deceptive auth keywords (login, kyc), and missing SSL. Analysts can also classify threats as FALSE_POSITIVE in 1 click."</em>
+              </p>
+              <span class="hud-pill pill-green">Multi-Factor Weighting</span>
+            </div>
+
+            <!-- QA 2 -->
+            <div class="hud-card pink-glow">
+              <span class="hud-icon">✉️</span>
+              <h3 class="hud-title">Q2: How are takedowns addressed?</h3>
+              <p class="hud-desc">
+                <em>"Our takedown generator extracts the hosting registrar and DNS provider from WHOIS/DNS records, maps the correct authoritative abuse contact (e.g., abuse@cloudflare.com), and formats an ICANN &amp; DMCA compliant Cease &amp; Desist letter containing exact evidence timestamps."</em>
+              </p>
+              <span class="hud-pill pill-cyan">Authoritative Abuse Routing</span>
+            </div>
+
+            <!-- QA 3 -->
+            <div class="hud-card pink-glow">
+              <span class="hud-icon">🛡️</span>
+              <h3 class="hud-title">Q3: Is the data ethically compliant?</h3>
+              <p class="hud-desc">
+                <em>"Yes. In strict alignment with HACXLERATE guidelines, BrandShield is 100% defensive. It only monitors public DNS records, open social profiles, and synthetic/authorized breach telemetry without gathering or scraping private personal data."</em>
+              </p>
+              <span class="hud-pill pill-gold">100% Defensive &amp; Ethical</span>
+            </div>
+          </div>
+
+          <div style="margin-top:1.5rem; text-align:center;">
+            <a href="/" class="btn-deck primary" style="display:inline-flex; padding:10px 24px; font-size:1rem; text-decoration:none;">
+              🚀 Open Full BrandShield Live Platform ➔
+            </a>
+          </div>
+        </div>
+
+        <div class="slide-bottom">
+          <span>Thank You Judges! HACXLERATE 2026 Challenge #03</span>
+          <span>Powered by Kampus.vc • BrandShield Defense Grid</span>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+
+  <!-- ================================================================= -->
+  <!-- COLLAPSIBLE SPEAKER NOTES DRAWER                                  -->
+  <!-- ================================================================= -->
+  <aside class="notes-drawer" id="speaker-notes-drawer">
+    <div class="notes-header">
+      <div style="display:flex; align-items:center; gap:0.5rem;">
+        <span>🎙️ SPEAKER SCRIPT &amp; PITCH PACING</span>
+        <span class="notes-timing" id="notes-timing-badge">0:00 - 0:45</span>
+      </div>
+      <button class="timer-btn" onclick="toggleSpeakerNotes()">✕ Close (N)</button>
+    </div>
+    <div class="notes-body" id="notes-content">
+      <!-- Dynamically filled with script for current slide -->
+    </div>
+  </aside>
+
+
+  <!-- ================================================================= -->
+  <!-- BOTTOM NAVIGATION & FOOTER                                        -->
+  <!-- ================================================================= -->
+  <footer class="deck-footer">
+    <!-- Prev Button -->
+    <div class="nav-btn-group">
+      <button class="btn-nav" id="btn-prev" onclick="prevSlide()">
+        ◀ Previous
+      </button>
+      <button class="btn-nav primary" id="btn-next" onclick="nextSlide()">
+        Next Slide ➔
+      </button>
+    </div>
+
+    <!-- Dots Navigation -->
+    <div class="slide-dots" id="dots-container">
+      <button class="slide-dot active" onclick="goToSlide(1)" title="Slide 1: Dashboard (Template 1)"></button>
+      <button class="slide-dot template2" onclick="goToSlide(2)" title="Slide 2: The Problem (Template 2)"></button>
+      <button class="slide-dot template2" onclick="goToSlide(3)" title="Slide 3: The Solution (Template 2)"></button>
+      <button class="slide-dot template2" onclick="goToSlide(4)" title="Slide 4: Live Engines (Template 2)"></button>
+      <button class="slide-dot template2" onclick="goToSlide(5)" title="Slide 5: Remediation (Template 2)"></button>
+      <button class="slide-dot template2" onclick="goToSlide(6)" title="Slide 6: Business Model (Template 2)"></button>
+      <button class="slide-dot template2" onclick="goToSlide(7)" title="Slide 7: Differentiators (Template 2)"></button>
+      <button class="slide-dot template2" onclick="goToSlide(8)" title="Slide 8: Judge Q&A (Template 2)"></button>
+    </div>
+
+    <!-- Keyboard Hints -->
+    <div style="font-size:0.75rem; color:#64748b; display:flex; align-items:center; gap:0.5rem;">
+      <span>Nav:</span>
+      <span class="key-hint">◀ / ▶</span>
+      <span class="key-hint">Space</span>
+      <span>Notes:</span>
+      <span class="key-hint">N</span>
+      <span>Full:</span>
+      <span class="key-hint">F</span>
+    </div>
+  </footer>
+
+
+  <!-- ================================================================= -->
+  <!-- JAVASCRIPT CONTROLLER FOR SLIDES                                  -->
+  <!-- ================================================================= -->
+  <script>
+    const totalSlides = 8;
+    let currentSlide = {{ initial_slide if initial_slide and initial_slide >= 1 and initial_slide <= 8 else 1 }};
+
+    // Speaker Scripts matching PITCH_DECK.md
+    const SpeakerScripts = {
+      1: {
+        timing: "0:00 - 0:45",
+        script: "<strong>Speaker Script:</strong><br><em>\"Every day, cybercriminals launch attacks that bypass traditional company firewalls completely. They register look-alike domains with one character changed, spin up deceptive phishing portals, launch fake customer care social accounts, and exploit leaked employee credentials.<br><br>For large tech giants, million-dollar security teams monitor this 24/7. But for small-to-midsize businesses and growing startups, there has been no affordable, automated defense. That’s why we built <strong>BrandShield</strong>.\"</em>"
+      },
+      2: {
+        timing: "0:00 - 0:45",
+        script: "<strong>Speaker Script:</strong><br><em>\"Notice the anatomy of the threat: scammers don't breach firewalls anymore. They exploit consumer trust outside the perimeter. A customer gets an SMS with a link to <code>abcbank-secure-netbanking.top</code>. It looks identical to ABC Bank's portal, but it harvests their login credentials, passwords, and OTP tokens. This damages the brand's reputation and causes massive direct financial losses.\"</em>"
+      },
+      3: {
+        timing: "0:45 - 1:30",
+        script: "<strong>Speaker Script:</strong><br><em>\"BrandShield is an autonomous Digital Risk Protection Platform that acts as a 24/7 exterior perimeter defense.<br>1. <strong>Ground Truth Registration</strong>: An organization registers its official domain and social footprint.<br>2. <strong>Active Threat Hunting</strong>: Our engine continuously hunts for homoglyphs, typosquats, and social impersonators using fuzzy text similarity and DNS resolution checks.<br>3. <strong>Explainable URL Risk Scorer</strong>: Evaluates any link on a 0–100 risk scale with transparent diagnostic reasons.<br>4. <strong>1-Click Takedowns</strong>: Automatically generates legally binding Cease & Desist notifications addressed directly to registrar abuse desks.\"</em>"
+      },
+      4: {
+        timing: "1:30 - 2:30",
+        script: "<strong>Speaker Script:</strong><br><em>\"Here you can see our live explainable heuristic engine in action. Unlike competitor tools that give a black-box percentage, BrandShield provides transparent evidence cards: unencrypted HTTP protocol, protected keyword masquerading, high-abuse .top TLD, and entropy score. This makes the risk verdict instantly justifiable to judges, security analysts, and registrar abuse desks.\"</em>"
+      },
+      5: {
+        timing: "2:30 - 3:30",
+        script: "<strong>Speaker Script:</strong><br><em>\"Once a threat is confirmed, detection without remediation is useless. BrandShield provides 1-Click Takedowns. Our system parses the domain's WHOIS data, locates the registrar abuse email (like <code>abuse@cloudflare.com</code> or <code>abuse@namecheap.com</code>), and composes an ICANN & DMCA compliant Cease & Desist letter with cryptographic timestamps. The analyst clicks one button to dispatch the notice and moves the incident to RESOLVED.\"</em>"
+      },
+      6: {
+        timing: "3:30 - 4:15",
+        script: "<strong>Speaker Script:</strong><br><em>\"Our business model is a simple, predictable monthly subscription scaled by the number of monitored assets with premium tiers for automated takedown SLAs. Compared to hiring a dedicated SOC analyst ($85k+/yr), BrandShield provides comprehensive brand protection starting at just $29/month—saving growing businesses up to 98% in overhead costs.\"</em>"
+      },
+      7: {
+        timing: "4:15 - 5:00",
+        script: "<strong>Speaker Script:</strong><br><em>\"Our core differentiators are: (1) Explainable AI scoring with no black boxes; (2) 1-Click legal remediation bridging alerts to takedowns; and (3) Zero setup friction in under 60 seconds.<br>Our roadmap includes real-time Certificate Transparency log streaming, native Slack and Teams incident webhooks, and a consumer browser extension.\"</em>"
+      },
+      8: {
+        timing: "Q&A Session",
+        script: "<strong>Judges Q&A Preparation:</strong><br>• <strong>False Positives:</strong> We combine RapidFuzz string proximity, live DNS resolution, presence of deceptive auth keywords, and missing SSL. Analysts can also classify as FALSE_POSITIVE in 1-click.<br>• <strong>Takedowns:</strong> We extract registrar abuse contacts and format ICANN & DMCA Cease & Desist notices.<br>• <strong>Defensive Standards:</strong> We monitor strictly public DNS and authorized feeds without gathering private personal data."
+      }
+    };
+
+    function updateSlideView() {
+      // Update Slide visibility
+      document.querySelectorAll(".slide").forEach((el, index) => {
+        if (index + 1 === currentSlide) {
+          el.classList.add("active");
+        } else {
+          el.classList.remove("active");
+        }
+      });
+
+      // Update dots
+      document.querySelectorAll(".slide-dot").forEach((dot, index) => {
+        if (index + 1 === currentSlide) {
+          dot.classList.add("active");
+        } else {
+          dot.classList.remove("active");
+        }
+      });
+
+      // Update Header Text
+      const currentEl = document.getElementById(`slide-${currentSlide}`);
+      const slideTitle = currentEl ? currentEl.getAttribute("data-title") : "";
+      document.getElementById("header-slide-indicator").innerText = `Slide ${currentSlide} of ${totalSlides}`;
+      document.getElementById("header-slide-name").innerText = slideTitle;
+
+      // Update Prev / Next Buttons
+      document.getElementById("btn-prev").disabled = (currentSlide === 1);
+      const nextBtn = document.getElementById("btn-next");
+      if (currentSlide === totalSlides) {
+        nextBtn.innerHTML = "Finish &amp; Open App 🚀";
+        nextBtn.classList.remove("pink-theme");
+      } else {
+        nextBtn.innerHTML = "Next Slide ➔";
+        if (currentSlide >= 1) {
+          nextBtn.classList.add("pink-theme");
+        }
+      }
+
+      // Update Speaker Notes Content
+      const notesData = SpeakerScripts[currentSlide];
+      if (notesData) {
+        document.getElementById("notes-timing-badge").innerText = notesData.timing;
+        document.getElementById("notes-content").innerHTML = notesData.script;
+      }
+
+      // Update URL hash without reload
+      window.history.replaceState(null, null, `?slide=${currentSlide}`);
+    }
+
+    function goToSlide(slideNum) {
+      if (slideNum >= 1 && slideNum <= totalSlides) {
+        currentSlide = slideNum;
+        updateSlideView();
+      }
+    }
+
+    function nextSlide() {
+      if (currentSlide < totalSlides) {
+        currentSlide++;
+        updateSlideView();
+      } else {
+        window.location.href = "/";
+      }
+    }
+
+    function prevSlide() {
+      if (currentSlide > 1) {
+        currentSlide--;
+        updateSlideView();
+      }
+    }
+
+    // Keyboard Shortcuts
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowRight" || e.key === " " || e.key === "PageDown") {
+        e.preventDefault();
+        nextSlide();
+      } else if (e.key === "ArrowLeft" || e.key === "PageUp") {
+        e.preventDefault();
+        prevSlide();
+      } else if (e.key === "Home") {
+        e.preventDefault();
+        goToSlide(1);
+      } else if (e.key === "End") {
+        e.preventDefault();
+        goToSlide(totalSlides);
+      } else if (e.key.toLowerCase() === "n") {
+        e.preventDefault();
+        toggleSpeakerNotes();
+      } else if (e.key.toLowerCase() === "f") {
+        e.preventDefault();
+        toggleFullScreen();
+      } else if (e.key === "Escape") {
+        const drawer = document.getElementById("speaker-notes-drawer");
+        if (drawer.classList.contains("open")) {
+          drawer.classList.remove("open");
+          document.getElementById("btn-notes").classList.remove("active");
+        }
+      }
+    });
+
+    // Speaker Notes Drawer Toggle
+    function toggleSpeakerNotes() {
+      const drawer = document.getElementById("speaker-notes-drawer");
+      const btn = document.getElementById("btn-notes");
+      drawer.classList.toggle("open");
+      btn.classList.toggle("active");
+    }
+
+    // Fullscreen Toggle
+    function toggleFullScreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(err => {
+          console.warn("Fullscreen request error:", err);
+        });
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        }
+      }
+    }
+
+    // 5-Minute Pitch Countdown Timer
+    let timerSeconds = 300; // 5 minutes
+    let timerRunning = false;
+    let timerInterval = null;
+
+    function formatTime(sec) {
+      const m = Math.floor(sec / 60);
+      const s = sec % 60;
+      return `${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
+    }
+
+    function updateTimerDisplay() {
+      const el = document.getElementById("pitch-timer");
+      el.innerText = formatTime(timerSeconds);
+      if (timerSeconds <= 60) {
+        el.style.color = "#ef4444";
+      } else if (timerSeconds <= 120) {
+        el.style.color = "#f59e0b";
+      } else {
+        el.style.color = "var(--slide-cyan)";
+      }
+    }
+
+    function toggleTimer() {
+      const btn = document.getElementById("btn-timer-toggle");
+      if (timerRunning) {
+        clearInterval(timerInterval);
+        timerRunning = false;
+        btn.innerText = "▶";
+      } else {
+        timerRunning = true;
+        btn.innerText = "⏸";
+        timerInterval = setInterval(() => {
+          if (timerSeconds > 0) {
+            timerSeconds--;
+            updateTimerDisplay();
+          } else {
+            clearInterval(timerInterval);
+            timerRunning = false;
+            btn.innerText = "▶";
+            alert("⏰ 5-minute presentation time is up!");
+          }
+        }, 1000);
+      }
+    }
+
+    function resetTimer() {
+      clearInterval(timerInterval);
+      timerRunning = false;
+      timerSeconds = 300;
+      document.getElementById("btn-timer-toggle").innerText = "▶";
+      updateTimerDisplay();
+    }
+
+    // Initialize slide view on load
+    document.addEventListener("DOMContentLoaded", () => {
+      updateSlideView();
+      updateTimerDisplay();
+    });
+  </script>
+</body>
+</html>
