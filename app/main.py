@@ -34,7 +34,6 @@ from sqlalchemy.orm import Session
 
 from .database import engine, Base, SessionLocal
 from .models import User, Brand, LookalikeDomain, Incident, SocialImpersonation, CredentialLeak, ScanHistory
-from .core.email_service import generate_otp, send_otp_email
 from .api import brands, lookalikes, scan, incidents, impersonation, leaks, dashboard, reports
 from .core.typosquatting import generate_lookalikes
 from .core.impersonation import scan_social_impersonations
@@ -323,22 +322,24 @@ def login_submit(request: Request, email: str = Form(""), password: str = Form("
     try:
         email = (email or "").strip().lower()
         if not email or not password:
-            return RedirectResponse(url="/login?message=" + quote("Please enter both email and password."), status_code=303)
+            return RedirectResponse(
+                url="/login?message=" + quote("Please enter both email and password."),
+                status_code=303,
+            )
+
         user = db.query(User).filter(User.email == email).first()
         if not user or not _verify_password(password, user.password_hash):
-            return RedirectResponse(url="/login?message=" + quote("Email or password is incorrect."), status_code=303)
-        
-        # Check if user email is verified
-        if not user.is_verified:
-            otp = generate_otp(6)
-            user.otp_code = otp
-            user.otp_expires_at = datetime.utcnow() + timedelta(minutes=10)
-            db.commit()
-            send_otp_email(user.email, otp, user.full_name)
             return RedirectResponse(
-                url=f"/verify-otp?email={quote(user.email)}&error=" + quote("Your account is not verified yet. A 6-digit OTP has been sent to your email."),
-                status_code=303
+                url="/login?message=" + quote("Email or password is incorrect."),
+                status_code=303,
             )
+
+        # OTP verification has been removed. Existing pending accounts can sign in too.
+        if not user.is_verified:
+            user.is_verified = True
+            user.otp_code = None
+            user.otp_expires_at = None
+            db.commit()
 
         request.session.clear()
         request.session["user_id"] = user.id
@@ -367,156 +368,58 @@ def register_submit(
 ):
     full_name = (full_name or "").strip()
     email = (email or "").strip().lower()
+
     if not full_name or len(full_name) > 150:
-        return RedirectResponse(url="/register?message=" + quote("Please enter a valid name."), status_code=303)
+        return RedirectResponse(
+            url="/register?message=" + quote("Please enter a valid name."), status_code=303
+        )
     if not email or "@" not in email or len(email) > 255:
-        return RedirectResponse(url="/register?message=" + quote("Please enter a valid email address."), status_code=303)
-    if not password or len(password) < 8:
-        return RedirectResponse(url="/register?message=" + quote("Password must be at least 8 characters."), status_code=303)
+        return RedirectResponse(
+            url="/register?message=" + quote("Please enter a valid email address."), status_code=303
+        )
+    if len(password) < 8:
+        return RedirectResponse(
+            url="/register?message=" + quote("Password must be at least 8 characters."), status_code=303
+        )
     if password != confirm_password:
-        return RedirectResponse(url="/register?message=" + quote("Passwords do not match."), status_code=303)
-    
+        return RedirectResponse(
+            url="/register?message=" + quote("Passwords do not match."), status_code=303
+        )
+
     db = SessionLocal()
     try:
-        existing_user = db.query(User).filter(User.email == email).first()
-        if existing_user:
-            if existing_user.is_verified:
-                return RedirectResponse(url="/login?message=" + quote("An account with this email already exists and is verified. Please log in."), status_code=303)
-            else:
-                # User registered before but did not verify OTP
-                otp = generate_otp(6)
-                existing_user.full_name = full_name
-                existing_user.password_hash = _hash_password(password)
-                existing_user.otp_code = otp
-                existing_user.otp_expires_at = datetime.utcnow() + timedelta(minutes=10)
-                db.commit()
-                send_otp_email(existing_user.email, otp, existing_user.full_name)
+        user = db.query(User).filter(User.email == email).first()
+        if user:
+            if user.is_verified:
                 return RedirectResponse(
-                    url=f"/verify-otp?email={quote(existing_user.email)}&message=" + quote("Account pending verification. A fresh verification OTP has been sent."),
-                    status_code=303
+                    url="/login?message=" + quote("An account with this email already exists. Please log in."),
+                    status_code=303,
                 )
+            # Convert an older unverified/OTP-pending account to the no-OTP flow.
+            user.full_name = full_name
+            user.password_hash = _hash_password(password)
+            user.is_verified = True
+            user.otp_code = None
+            user.otp_expires_at = None
+        else:
+            user = User(
+                full_name=full_name,
+                email=email,
+                password_hash=_hash_password(password),
+                is_verified=True,
+                otp_code=None,
+                otp_expires_at=None,
+            )
+            db.add(user)
 
-        # Create new unverified user
-        otp = generate_otp(6)
-        user = User(
-            full_name=full_name,
-            email=email,
-            password_hash=_hash_password(password),
-            is_verified=False,
-            otp_code=otp,
-            otp_expires_at=datetime.utcnow() + timedelta(minutes=10)
-        )
-        db.add(user)
         db.commit()
-        db.refresh(user)
-
-        send_otp_email(user.email, otp, user.full_name)
         return RedirectResponse(
-            url=f"/verify-otp?email={quote(user.email)}",
-            status_code=303
+            url="/login?message=" + quote("Account created successfully. Please sign in."),
+            status_code=303,
         )
-    finally:
-        db.close()
-
-
-@app.get("/verify-otp", response_class=HTMLResponse)
-def verify_otp_page(request: Request, email: str = "", message: str = "", error: str = ""):
-    if request.session.get("user_id"):
-        return RedirectResponse(url="/", status_code=303)
-    if not email:
-        return RedirectResponse(url="/login", status_code=303)
-
-    email = email.strip().lower()
-    db = SessionLocal()
-    try:
-        user = db.query(User).filter(User.email == email).first()
-        if not user:
-            return RedirectResponse(url="/register?message=" + quote("Account not found. Please create an account."), status_code=303)
-        if user.is_verified:
-            return RedirectResponse(url="/login?message=" + quote("Your account is already verified! Please sign in."), status_code=303)
-
-        smtp_configured = bool(os.environ.get("SMTP_USER", "").strip() and os.environ.get("SMTP_PASSWORD", "").strip())
-        dev_otp = user.otp_code if not smtp_configured else None
-
-        return _template_response(request, "verify_otp.html", {
-            "email": email,
-            "dev_otp": dev_otp,
-            "success": message,
-            "error": error
-        })
-    finally:
-        db.close()
-
-
-@app.post("/verify-otp")
-def verify_otp_submit(request: Request, email: str = Form(""), otp: str = Form("")):
-    email = (email or "").strip().lower()
-    otp_input = (otp or "").strip()
-    db = SessionLocal()
-    try:
-        user = db.query(User).filter(User.email == email).first()
-        if not user:
-            return RedirectResponse(url="/register?message=" + quote("Account not found. Please register."), status_code=303)
-
-        if user.is_verified:
-            return RedirectResponse(url="/login?message=" + quote("Account already verified. Please sign in."), status_code=303)
-
-        smtp_configured = bool(os.environ.get("SMTP_USER", "").strip() and os.environ.get("SMTP_PASSWORD", "").strip())
-        dev_otp = user.otp_code if not smtp_configured else None
-
-        if not user.otp_code or user.otp_code != otp_input:
-            return _template_response(request, "verify_otp.html", {
-                "email": email,
-                "dev_otp": dev_otp,
-                "error": "Invalid verification code. Please check your email or terminal and try again."
-            })
-
-        if user.otp_expires_at and user.otp_expires_at < datetime.utcnow():
-            return _template_response(request, "verify_otp.html", {
-                "email": email,
-                "dev_otp": dev_otp,
-                "error": "The verification code has expired. Please click Resend OTP below."
-            })
-
-        # Mark user verified
-        user.is_verified = True
-        user.otp_code = None
-        user.otp_expires_at = None
-        db.commit()
-
-        # Sign the user in with verified status
-        request.session.clear()
-        request.session["user_id"] = user.id
-        request.session["user_name"] = user.full_name
-        request.session["user_email"] = user.email
-        request.session["is_verified"] = True
-
-        return RedirectResponse(url="/?verified=1", status_code=303)
-    finally:
-        db.close()
-
-
-@app.post("/resend-otp")
-def resend_otp_submit(request: Request, email: str = Form("")):
-    email = (email or "").strip().lower()
-    db = SessionLocal()
-    try:
-        user = db.query(User).filter(User.email == email).first()
-        if not user:
-            return RedirectResponse(url="/register?message=" + quote("Account not found. Please create an account."), status_code=303)
-        if user.is_verified:
-            return RedirectResponse(url="/login?message=" + quote("Account is already verified. Please sign in."), status_code=303)
-
-        new_otp = generate_otp(6)
-        user.otp_code = new_otp
-        user.otp_expires_at = datetime.utcnow() + timedelta(minutes=10)
-        db.commit()
-
-        send_otp_email(user.email, new_otp, user.full_name)
-        return RedirectResponse(
-            url=f"/verify-otp?email={quote(email)}&message=" + quote("A fresh 6-digit OTP code has been dispatched."),
-            status_code=303
-        )
+    except Exception:
+        db.rollback()
+        raise
     finally:
         db.close()
 
