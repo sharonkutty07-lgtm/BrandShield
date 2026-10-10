@@ -364,7 +364,6 @@ def register_submit(
     full_name: str = Form(""),
     email: str = Form(""),
     password: str = Form(""),
-    confirm_password: str = Form(""),
 ):
     full_name = (full_name or "").strip()
     email = (email or "").strip().lower()
@@ -381,11 +380,6 @@ def register_submit(
         return RedirectResponse(
             url="/register?message=" + quote("Password must be at least 8 characters."), status_code=303
         )
-    if password != confirm_password:
-        return RedirectResponse(
-            url="/register?message=" + quote("Passwords do not match."), status_code=303
-        )
-
     db = SessionLocal()
     try:
         user = db.query(User).filter(User.email == email).first()
